@@ -1,11 +1,11 @@
 
-http://username.github.io/archive
-http://username.github.io/atom.xml
-http://username.github.io/categories
-http://username.github.io/
-http://username.github.io/pages
-http://username.github.io/rss.xml
-http://username.github.io/sitemap.txt
-http://username.github.io/tags
+http://willsb.github.io/blog/about
+http://willsb.github.io/blog/archive
+http://willsb.github.io/atom.xml
+http://willsb.github.io/blog/categories
+http://willsb.github.io/blog/
+http://willsb.github.io/rss.xml
+http://willsb.github.io/sitemap.txt
+http://willsb.github.io/blog/tags
 
-http://username.github.io/lessons/2011/12/29/jekyll-introduction
+http://willsb.github.io/xamarin/2016/02/11/episode-I

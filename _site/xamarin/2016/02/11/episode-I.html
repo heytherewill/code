@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>MVV O que? - MVVM aplicado à Xamarin</title>
+	<meta name="author" content="William Barbosa">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" media="all">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.eot" rel="stylesheet" media="all">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='/assets/themes//css/style.css' rel="stylesheet" media="all">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="MVV O que? - MVVM aplicado à Xamarin" type="application/atom+xml">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="hentry">
+	<header class="the-header">
+		<div class="unit-head">
+			<div class="unit-inner unit-head-inner">
+				<p class="logo"><a href="/blog">William Barbosa</a></p>
+				<nav class="nav-global">
+					<ul>
+						<!--<li class="archive"><a href="/blog/archive">arquivo</a></li>
+						<li class="about"><a href="/blog/about">sobre</a></li>
+						<li class="categories"><a href="/blog/categories">categorias</a></li>
+						<li class="tags"><a href="/blog/tags">tags</a></li> -->
+					</ul>
+				</nav>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					
+<article class="unit-article layout-post">
+	<div class="unit-inner unit-article-inner">
+		<div class="content">
+			<header>
+				<div class="unit-head">
+					<div class="unit-inner unit-head-inner">
+						<h1 class="h2 entry-title">MVV O que? - MVVM aplicado à Xamarin</h1>
+					</div><!-- unit-inner -->
+				</div><!-- unit-head -->
+			</header>
+
+			<div class="bd">
+				<div class="entry-content">
+					
+<h3 id="episdio-i---introduo--mvvm-e-mvvmcross">Episódio I - Introdução à MVVM e MVVMCross</h3>
+
+<p>Este é o primeiro post de uma série de chamada “MVV o que?”. Nesta série eu irei falar do padrão MVVM (Model-View-ViewModel) aplicado em ambiente Android/Windows Phone usando Xamarin. Neste primeiro post, irei falar de conceitos básicos de Xamarin e explicar um pouco do Framework que será utilizado nos exemplos, o <a href="https://github.com/MvvmCross/MvvmCross">MvvmCross</a>.</p>
+
+<p>A motivação para a criação deste conteúdo é a carência de fontes sobre esse tema em português e a falta de pontos de início para os estudos de Xamarin como um todo. Acompanhando a comunidade Xamarin (no StackOverflow e no grupo <a href="https://www.facebook.com/groups/MonkeyNightsDevs/">Monkey Nights Devs</a>, entre outros lugares) percebe-se que muitos desenvolvedores vêm de um background Android ou simplesmente desconhecem o padrão MVVM, que é amplamente difundido no .Net.</p>
+
+<p>Minha abordagem tentará ser menos formal do que minhas resposta no StackOverflow, porém sem jamais perder detalhes importantes ao entendimento. Afinal, se o objetivo fosse parafrasear a definição de MVVM da Wikipedia, não tem motivo para estar aqui. Now let’s get down to business!</p>
+
+<h3 id="o-que--mvvm-mesmo">O que é MVVM mesmo?</h3>
+
+<p><strong>Disclaimer - Esses são conceitos teóricos básicos com o objetivo de conceituar quem nunca ouviu falar de MVVM. Se você já tem familiaridade com esse padrão, pode pular essa parte inteira sem perder nada.</strong></p>
+
+<p>Model-View-ViewModel (MVVM) é um padrão criado por engenheiros da Microsoft com o objetivo de facilitar o desacoplamento das responsabilidades de UI e lógica de negócios durante o processo de desenvolvimento de Software. Programas escritos usando esse padrão são idealmente testáveis e de fácil manutenção. Para mais informação histórica sobre MVVM (que não é o objetivo desse post), você pode consultar <a href="https://msdn.microsoft.com/en-us/library/hh848246.aspx">esta página</a>, da própria Microsoft</p>
+
+<p>A maneira como o padrão funciona pode ser explicada de forma relativamente simples. Os models são a representação dos seus dados na base. ViewModels (VM) são abstrações que tem como intuito expor apenas o que é necessário para que as Views, que são a camada de apresentação, exibam os dados na tela com facilidade. Sendo assim, os dados (models) são moldados para gerar ViewModels que são usadas pelas Views para exibir os dados na tela. Por mais simples que pareça, essa separação fornece grandes benefícios.</p>
+
+<p>Um deles é a facilidade de testar. ViewModels são classes independentes da interação do usuário. Isso quer dizer que escrever testes de unidade para elas é simples (e bastante aconselhável). Isso nos leva a um outro ponto crucial para o MVVM casar com o Xamarin: as ViewModels são independentes das Views. Idealmente, ViewModels nem sabem que uma View existe, portanto a mesma ViewModel pode ser usada por mais de uma interface!</p>
+
+<p>“Legal, uma VM serve para muitas Views. E dai?”, você se pergunta. A resposta é: Essa é exatamente a proposta do Xamarin! Reuso do mesmo código para gerar apps em muitas plataformas. Ou seja, uma ViewModel escrita em C# pode reger as Views que vão ser usadas no seu app Android, iOS e Windows Phone! Wow!</p>
+
+<h3 id="e-como-isso-tudo-funciona-com-xamarin">E como isso tudo funciona com Xamarin?</h3>
+
+<p>É importante lembrar que MVVM é apenas um padrão. Precisamos de um framework que implemente este padrão para coloca-lo em prática. Existem inúmeros frameworks de MVVM disponíveis. O que usaremos durante essa série é o MvvmCross, que é um framework bastante completo e que funciona muito bem com Xamarin. Os conceitos de MVVM que você aprenderá, contudo, são aplicáveis a qualquer outro framework.</p>
+
+<p>Quando se usa MvvmCross, você precisará de um projeto Core, que é onde ficará toda a lógica compartilhada entre as plataformas que você usará (ou seja, ViewModels e Models) e um projeto específico para cada plataforma que você irá utilizar. Sendo assim, uma estrutura que vai funcionar em Windows Phone, iOS e Android terá, no mínimo, 4 projetos.</p>
+
+<p>Usar o MVVMCross na prática é super simples. Basta instalar o pacote <a href="https://www.nuget.org/packages/MvvmCross.StarterPack/">MvvmCross.StarterPack</a> em cada um dos seus projetos e ele criará uma estrutura mínima para começar o seu projeto. O assunto do próximo post será justamente esse: Entendendo a estrutura de um app MvvmCross.</p>
+
+<h3 id="tem-que-pagar-alguma-coisa">Tem que pagar alguma coisa?</h3>
+
+<p>O MvvmCross é 100% gratuito e de código aberto. Você pode olhar o código, modifica-lo e usar o quanto quiser, sem pagar nada. O Xamarin, contudo, não é. Se quiser usar seu código para fazer aplicativos para Android ou iOS, você terá que pagar a licença do Xamarin. Sobre o funcionamento das licenças, <a href="http://xamarinbr.azurewebsites.net/entendendo-as-licencas-do-xamarin/">este post</a>, do Angelo Belchior, explica muito bem o funcionamento e os valores de cada modalidade.</p>
+
+<p>Mesmo sem ter acesso à uma conta Xamarin paga, você pode iniciar um período de 30 dias de trial para praticar com apps Android/iOS e os exemplos usados aqui irão sempre cobrir UWP (Universal Windows Platform) para que todos possam aprender :)</p>
+
+					<div class="meta">
+						<p class="date-publish">
+							Published: 
+							<date class="date-pub" title="2016-02-11T00:00:00-02:00" datetime="2016-02-11T00:00:00-02:00" pubdate>
+							<span class="month"><abbr>February</abbr></span>
+							<span class="day">11</span>
+							<span class="year">2016</span>
+							</date>
+						</p>
+						<ul class="list-category list-linear">
+							<li class="list-head">category:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/categories#xamarin-ref">
+    		xamarin <span>1</span>
+    	</a></li>
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/tags#mvvm-ref">mvvm <span>1</span></a></li>
+     
+    	<li><a href="/tags#xamarin-ref">xamarin <span>1</span></a></li>
+     
+    	<li><a href="/tags#mvvmcross-ref">mvvmcross <span>1</span></a></li>
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="willdotnet" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/willdotnet" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					
+					
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+				</div><!-- misc-content -->
+				
+			</div><!-- bd -->
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							
+							
+						</ul>
+					</nav>
+					<p class="gotop">
+						<a href="#page">Back to Top</a>
+					</p>
+				</div>
+			</footer>
+
+		</div><!-- content -->
+	</div><!-- unit-inner -->
+</article>
+
+
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
+	<footer class="the-footer">
+		<div class="unit-foot">
+			<div class="unit-inner unit-foot-inner">
+				<div class="misc vcard">
+					<h4>Contato	</h4>
+					<ul>
+						<li class="email">
+							<a href="mailto:william.sb@hotmail.com" rel="me">
+								<i class="fi-mail"></i>
+							</a>
+						</li>
+						<li class="github">
+							<a href="http://github.com/willsb/" rel="me">
+								<i class="fi-social-github"></i>
+							</a>
+						</li>
+						<li class="facebook">
+							<a href="http://fb.com/Willkuns/" rel="me">
+								<i class="fi-social-facebook"></i>
+							</a>
+						</li>
+						<li class="twitter">
+							<a class="fi-social-twitter" href="http://twitter.com/willdotnet/" rel="me">
+								<i ></i>
+							</a>
+						</li>
+					</ul>
+				</div><!-- misc -->
+				<p class="licence">
+					Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a>.
+				</p>
+			</div><!-- unit-foot-inner -->
+		</div><!-- unit-foot -->
+	</footer>
+</div><!-- page -->
+<script>
+	(function(d, s) {
+		var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.src = url; js.id = id;
+		fjs.parentNode.insertBefore(js, fjs);
+		};
+	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/xamarin/2016/02/11/episode-I" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	}(document, 'script'));
+</script>
+<script>
+/*! A fix for the iOS orientationchange zoom bug.Script by @scottjehl, rebound by @wilto. MIT License.*/
+(function(j){var i=j.document;if(!i.querySelectorAll){return}var l=i.querySelectorAll("meta[name=viewport]")[0],a=l&&l.getAttribute("content"),h=a+", maximum-scale=1.0",d=a+", maximum-scale=10.0",g=true,c=j.orientation,k=0;if(!l){return}function f(){l.setAttribute("content",d);g=true}function b(){l.setAttribute("content",h);g=false}function e(m){c=Math.abs(j.orientation);k=Math.abs(m.gamma);if(k>8&&c===0){if(g){b()}}else{if(!g){f()}}}j.addEventListener("orientationchange",f,false);j.addEventListener("deviceorientation",e,false)})(this);
+</script>
+
+  
+
+
+
+</body>
+</html>
+

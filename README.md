@@ -1,2 +1,2 @@
 # willsb.github.io
-My page
+My blog and personal page

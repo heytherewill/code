@@ -8,13 +8,14 @@ highlighter: pygments
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : willsb.net
+title : William Barbosa
 tagline: "Xamarin, C#, F#, JS e Windows Phone"
 author :
   name : William Barbosa
   email : william.sb@hotmail.com
   github : willsb
   twitter : willdotnet
+  facebook : Willkuns
   feedburner : feedname
 
 # The production_url is only used when full-domain names are needed
