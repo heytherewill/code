@@ -301,7 +301,16 @@ pre {
   padding-left: 0;
 }
 .unit-article ul {
-  list-style: square;
+  list-style: none;
+}
+.list-tag li ~ li {
+  margin-left: 10px;
+}
+.list-category li ~ li {
+  margin-left: 10px;
+}
+.unit-article .index-page li{
+  margin-bottom: 50px;
 }
 .unit-article ol {
   list-style: decimal;

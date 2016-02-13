@@ -5,17 +5,22 @@ description: ""
 ---
 {% include JB/setup %}
 
-<ul>
+<ul class="index-page">
 {% for post in site.posts  %}
 
-	
-	{% assign preview = post.content | split: '</p>' %}
+	{% assign parts = post.content | split: '</h3>' %}
+
+	{% assign preview = parts[1] | strip_html | truncatewords: 60 %}
 
 	<li>
 		<a href="{{ BASE_PATH }}{{ post.url }}"> 
-			{{ preview[0] }} </p>
-			Leia mais...
+		
+			<h3> {{ post.title }} </h3>
+			<h3> {{ post.tagline }} </h3>
+			{{ preview }}
 		</a>
+
+		<h6> Publicado em {{ post.date | date: "%d/%m/%Y" }} </h6>
 	</li>
 
 {% endfor %}
