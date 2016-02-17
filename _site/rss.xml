@@ -5,8 +5,8 @@
         <description>William Barbosa - William Barbosa</description>
         <link>http://willsb.github.io</link>
         <atom:link href="http://willsb.github.io/rss.xml" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Wed, 17 Feb 2016 19:58:21 -0200</lastBuildDate>
-        <pubDate>Wed, 17 Feb 2016 19:58:21 -0200</pubDate>
+        <lastBuildDate>Wed, 17 Feb 2016 20:00:50 -0200</lastBuildDate>
+        <pubDate>Wed, 17 Feb 2016 20:00:50 -0200</pubDate>
         <ttl>60</ttl>
 
 
@@ -15,7 +15,7 @@
                 <description>
 &lt;h3 id=&quot;episdio-i---preparando-uma-pcl-para-xamarin&quot;&gt;Episódio I - Preparando uma PCL para Xamarin&lt;/h3&gt;
 
-&lt;p&gt;Este é uma material de apoio que eu publicarei em paralelo à série &lt;a href=&quot;http://willsb.github.io/xamarin/2016/02/11/episode-I&quot;&gt;MVV O que?&lt;/a&gt;. Serão dois posts, onde eu irei ensinar como deixar a sua PCL pronta (além de instruir o que é uma PCL),  e explanar acerca da necessidade de trabalhar com assincronia quando se trata de desenvolvimento Cross-Mobile com Xamarin. Sendo essa uma série assíncrona, as postagens de &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross&quot;&gt;MvvmCross&lt;/a&gt; seguem naturalmente em paralelo :)&lt;/p&gt;
+&lt;p&gt;Este é um material de apoio que eu publicarei em paralelo à série &lt;a href=&quot;http://willsb.github.io/xamarin/2016/02/11/episode-I&quot;&gt;MVV O que?&lt;/a&gt;. Serão dois posts, onde eu irei ensinar como deixar a sua PCL pronta (além de instruir o que é uma PCL),  e explanar acerca da necessidade de trabalhar com assincronia quando se trata de desenvolvimento Cross-Mobile com Xamarin. Sendo essa uma série assíncrona, as postagens de &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross&quot;&gt;MvvmCross&lt;/a&gt; seguem naturalmente em paralelo :)&lt;/p&gt;
 
 &lt;h3 id=&quot;pcl&quot;&gt;PCL?&lt;/h3&gt;
 
