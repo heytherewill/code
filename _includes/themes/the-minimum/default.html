@@ -21,32 +21,7 @@
 	<header class="the-header">
 		<div class="unit-head">
 			<div class="unit-inner unit-head-inner">
-				<p class="logo"><a href="/blog">{{ site.title }}</a></p>
-				<nav class="nav-global">
-					<ul>
-						<!--<li class="archive"><a href="/blog/archive">arquivo</a></li>-->
-						<li class="about"><a href="/blog/about">sobre</a></li>
-						<!--<li class="categories"><a href="/blog/categories">categorias</a></li>-->
-						<li class="tags"><a href="/blog/tags">tags</a></li>
-					</ul>
-				</nav>
-			</div><!-- unit-inner -->
-		</div><!-- unit-head -->
-	</header>
-	<div class="body" role="main">
-		<div class="unit-body">
-			<div class="unit-inner unit-body-inner">
-				<div class="entry-content">
-					{{ content }}
-				</div>
-			</div><!-- unit-inner -->
-		</div><!-- unit-body -->
-	</div><!-- body -->
-	<footer class="the-footer">
-		<div class="unit-foot">
-			<div class="unit-inner unit-foot-inner">
-				<div class="misc vcard">
-					<h4>Contato	</h4>
+				<a class="title" href="/blog">{{ site.title }}</a>
 					<ul>
 						<li class="email">
 							<a href="mailto:{{ site.author.email }}" rel="me">
@@ -69,13 +44,18 @@
 							</a>
 						</li>
 					</ul>
-				</div><!-- misc -->
-				<p class="licence">
-					Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a>.
-				</p>
-			</div><!-- unit-foot-inner -->
-		</div><!-- unit-foot -->
-	</footer>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					{{ content }}
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
 </div><!-- page -->
 <script>
 	(function(d, s) {

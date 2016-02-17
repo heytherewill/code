@@ -5,10 +5,48 @@
         <description>William Barbosa - William Barbosa</description>
         <link>http://willsb.github.io</link>
         <atom:link href="http://willsb.github.io/rss.xml" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Sat, 13 Feb 2016 13:15:15 -0200</lastBuildDate>
-        <pubDate>Sat, 13 Feb 2016 13:15:15 -0200</pubDate>
+        <lastBuildDate>Wed, 17 Feb 2016 19:58:21 -0200</lastBuildDate>
+        <pubDate>Wed, 17 Feb 2016 19:58:21 -0200</pubDate>
         <ttl>60</ttl>
 
+
+        <item>
+                <title>await willsb.PreparePCLAsync();</title>
+                <description>
+&lt;h3 id=&quot;episdio-i---preparando-uma-pcl-para-xamarin&quot;&gt;Episódio I - Preparando uma PCL para Xamarin&lt;/h3&gt;
+
+&lt;p&gt;Este é uma material de apoio que eu publicarei em paralelo à série &lt;a href=&quot;http://willsb.github.io/xamarin/2016/02/11/episode-I&quot;&gt;MVV O que?&lt;/a&gt;. Serão dois posts, onde eu irei ensinar como deixar a sua PCL pronta (além de instruir o que é uma PCL),  e explanar acerca da necessidade de trabalhar com assincronia quando se trata de desenvolvimento Cross-Mobile com Xamarin. Sendo essa uma série assíncrona, as postagens de &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross&quot;&gt;MvvmCross&lt;/a&gt; seguem naturalmente em paralelo :)&lt;/p&gt;
+
+&lt;h3 id=&quot;pcl&quot;&gt;PCL?&lt;/h3&gt;
+
+&lt;p&gt;Portable Class Libraries (PCLs) são tipos específicos de Class Library que podem ser consumidos em multiplos tipos de projeto. Dependendo de como ela é criada, a mesma PCL pode ser utilizada no seu projeto ASP.Net, Windows Phone e até mesmo Android e iOS usando Xamarin. A um conjunto de plataformas, da-se o nom de profile. Mais informação sobre profiles pode ser encontrada &lt;a href=&quot;http://embed.plnkr.co/03ck2dCtnJogBKHJ9EjY/&quot;&gt;aqui&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Quando você cria uma PCL, você escolhe quais plataformas ela vai utilizar. Isso determina quais bibliotecas do .net você poderá usar dentro da sua Class Library, sempre limitando por baixo. Por exemplo: Nenhuma das plataformas móveis tem acesso ao &lt;code class=&quot;highlighter-rouge&quot;&gt;System.IO&lt;/code&gt;. Você pode usar &lt;code class=&quot;highlighter-rouge&quot;&gt;System.IO&lt;/code&gt; em uma PCL que tem como alvo .Net 4.5 e Windows 8, mas ao adicionar Xamarin.Android ou Windows Phone (plataformas que não podem acessar &lt;code class=&quot;highlighter-rouge&quot;&gt;System.IO&lt;/code&gt;), você não pode mais referenciar esse namespace na sua PCL.&lt;/p&gt;
+
+&lt;p&gt;Como a palavra chave do Xamarin é reuso de código, é crucial tentar manter a maior quantidade possível de código dentro de uma PCL que pode ser usada por todas as suas plataformas. Claro que nem todo código pode ser compartilhado (discutiremos isso mais a fundo na série “MVV O que?”), mas quanto mais código estiver na sua PCL, menos tempo você perderá corrigindo bugs através dos dispositivos.&lt;/p&gt;
+
+&lt;h3 id=&quot;e-o-que-pode-ser-compartilhado&quot;&gt;E o que pode ser compartilhado?&lt;/h3&gt;
+
+&lt;p&gt;Uma regra geral é tentar compartilhar tudo que não for referente à camada de visualização. Orquestração da navegação, chamadas de rede, salvamento e recuperação de estado, constantes e até mesmo métodos de extensão que são pertinentes a todas plataformas podem e devem ser incluídos na sua PCL.&lt;/p&gt;
+
+&lt;p&gt;Dos exemplos acima, o que sem dúvidas é o maior facilitador é a parte de chamadas de rede. Mesmo que sua aplicação Xamarin não faça uso do padrão MVVM, deixar toda a parte de comunicação com APIs do seu app disponível em uma PCL é algo fundamental. Digo isso porque as chamadas à rede seguem um padrão que independe da plataforma: Você faz uma requisição, o servidor serve uma resposta e você faz algo com esse resultado.&lt;/p&gt;
+
+&lt;p&gt;Ao fazer toda a parte de rede em uma PCL, você consegue colocar todo o tratamento de erros e transformação dos dados em um único lugar. Alteração na API? Bug no client? Comportamento deve ser alterado? Tudo se resolve em todas as suas aplicações ao mudar uma unica chamada. Legal, né?&lt;/p&gt;
+
+&lt;h3 id=&quot;e-como-faz-para-brincar-disso&quot;&gt;E como faz para brincar disso?&lt;/h3&gt;
+
+&lt;p&gt;Criar um projeto de PCL é simples. No VS15, sigo o caminho File &amp;gt; New Project &amp;gt; Visual C# &amp;gt; Windows &amp;gt; Class Library (Portable). Após selecionar o local de criação, você verá uma lista com as plataformas possíveis. Escolha as que você pretende usar e clique em ok.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/pcl-sample.png&quot; alt=&quot;Exemplo de criação de PCL&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Algo que costuma causar um certo pânico é o fato de que alguns targets de PCL não tem acesso ao namespace &lt;code class=&quot;highlighter-rouge&quot;&gt;System.Net.Http&lt;/code&gt; e nem tem suporte a operações assíncronas (a tabela de quais são esses targets pode ser encontrada &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/gg597391(v=vs.110).aspx#Anchor_4&quot;&gt;aqui&lt;/a&gt;). Para resolver esse problema, você deve instalar alguns pacotes NuGet que irão permitir o uso dessas libs. Os pacotes são o &lt;a href=&quot;https://www.nuget.org/packages/Microsoft.Bcl.Async/&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Microsoft.Bcl.Async&lt;/code&gt;&lt;/a&gt; e o &lt;a href=&quot;https://www.nuget.org/packages/Microsoft.Net.Http&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Microsoft.Net.Http&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Feito isso, sua PCL está pronta para se tornar o ponto de inicio do seu projeto! No próximo post desta série, Irei falar sobre a importancia de usar assíncronia e o quanto isso é facilitado ao usar Xamarin, então fiquem ligados e até a próxima!&lt;/p&gt;
+</description>
+                <link>http://willsb.github.io/xamarin/2016/02/17/episode-I</link>
+                <guid>http://willsb.github.io/xamarin/2016/02/17/episode-I</guid>
+                <pubDate>Wed, 17 Feb 2016 00:00:00 -0200</pubDate>
+        </item>
 
         <item>
                 <title>MVV O que? - MVVM aplicado à Xamarin</title>
