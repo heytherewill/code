@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>MVV O que? - MVVM aplicado à Xamarin</title>
+	<meta name="author" content="William Barbosa">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" media="all">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.eot" rel="stylesheet" media="all">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='/assets/themes//css/style.css' rel="stylesheet" media="all">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="MVV O que? - MVVM aplicado à Xamarin" type="application/atom+xml">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="hentry">
+	<header class="the-header">
+		<div class="unit-head">
+			<div class="unit-inner unit-head-inner">
+				<a class="title" href="/blog">William Barbosa</a>
+					<ul>
+						<li class="icon email">
+							<a href="mailto:william.sb@hotmail.com" rel="me">
+								<i class="fi-mail"></i>
+							</a>
+						</li>
+						<li class="icon github">
+							<a href="http://github.com/willsb/" rel="me">
+								<i class="fi-social-github"></i>
+							</a>
+						</li>
+						<li class="icon facebook">
+							<a href="http://fb.com/Willkuns/" rel="me">
+								<i class="fi-social-facebook"></i>
+							</a>
+						</li>
+						<li class="icon twitter">
+							<a class="fi-social-twitter" href="http://twitter.com/willdotnet/" rel="me">
+								<i ></i>
+							</a>
+						</li>
+					</ul>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					
+<article class="unit-article layout-post">
+	<div class="unit-inner unit-article-inner">
+		<div class="content">
+			<header>
+				<div class="unit-head">
+					<div class="unit-inner unit-head-inner">
+						<h1 class="h2 entry-title">MVV O que? - MVVM aplicado à Xamarin</h1>
+						<h6 class="publish-date"> Publicado em 24/02/2016 </h6>
+					</div><!-- unit-inner -->
+				</div><!-- unit-head -->
+			</header>
+
+			<div class="bd">
+				<div class="entry-content">
+					
+<p><img src="/assets/covers/mvvmwhat.png" alt="Cover" /></p>
+
+<h3 id="episdio-ii---a-estrutura-de-um-app-mvvmcross">Episódio II - A estrutura de um app MvvmCross</h3>
+
+<p>Esse post é a continuação da série sobre MvvmCross em Xamarin. Você pode ler o primeiro episódio, uma introdução ao padrão MVVM e ao MvvmCross, <a href="/xamarin/2016/02/11/episode-I">aqui</a>. Também é recomendada a leitura do artigo <a href="/xamarin/2016/02/17/episode-I">Preparando uma PCL para Xamarin</a>, onde eu explico como funcionam PCLs e alguns problemas comuns que acontecem ao cria-las. O post será mais teórico do que prático e servirá para que vocês entendam melhor como funciona uma aplicação MvvmCross, para não ficar as cegas sobre o funcionamento do framework.</p>
+
+<h3 id="por-onde-comear">Por onde começar?</h3>
+
+<p>Como visto no post anterior, o MvvmCross irá nos ajudar a separar o código para permitir a maior quantidade de reúso entre plataformas. Isso é alcançado colocando todas as regras de negócio e responsabilidades como navegação, comunicação com API e restauração de estado do app dentro de uma PCL. O padrão de nomenclatura dos apps que usam MvvmCross é sempre o mesmo: Uma PCL chamada <code class="highlighter-rouge">[Nome do seu projeto].Core</code> e projetos individuais para cada uma das plataformas, sempre usando o padrão <code class="highlighter-rouge">[Nome do seu projeto].[Nome da plataforma]</code>. Os nomes usados para cada plataformas são:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">[Nome do seu projeto].Core</code> - PCL compartilhada</li>
+  <li><code class="highlighter-rouge">[Nome do seu projeto].Droid</code> - Xamarin.Android</li>
+  <li><code class="highlighter-rouge">[Nome do seu projeto].IOs</code> - Xamarin.IOs</li>
+  <li><code class="highlighter-rouge">[Nome do seu projeto].Mac</code> -Xamarin.Mac</li>
+  <li><code class="highlighter-rouge">[Nome do seu projeto].Phone</code> - Windows Phone</li>
+  <li><code class="highlighter-rouge">[Nome do seu projeto].Store</code> - Windows Store</li>
+  <li><code class="highlighter-rouge">[Nome do seu projeto].UWP</code> - Universal Windows Platform</li>
+  <li><code class="highlighter-rouge">[Nome do seu projeto].WPF</code> - WPF</li>
+</ul>
+
+<p>Ao instalar o pacote nuget <a href="https://www.nuget.org/packages/MvvmCross.StarterPack/">MvvmCross.StarterPack</a>, alguns arquivos serão criados dentro do seu projeto, com base no tipo de projeto em que o pacote foi instalado. Esses arquivos são o mínimo necessário para você começar o seu projeto. No caso de uma PCL, ele irá criar os arquivos <code class="highlighter-rouge">App.cs</code> e <code class="highlighter-rouge">FirstViewModel.cs</code>, respectivamente o ponto de partida da sua aplicação MvvmCross e uma ViewModel básica de exemplo. No caso de projetos de UI, ele tipicamente criará um arquivo <code class="highlighter-rouge">Setup.cs</code>, contendo informações específicas da plataforma sobre o app MvvmCross,  <code class="highlighter-rouge">DebugTrace.cs</code>, que permite customizar o output do console, <code class="highlighter-rouge">FirstView.cs</code>, a View que fará par com a primeira ViewModel e um <code class="highlighter-rouge">LinkerPleaseInclude.cs</code>. Falarei mais sobre esses em outro artigo, pois hoje nós iremos nos focar no <code class="highlighter-rouge">App</code> e no <code class="highlighter-rouge">Setup</code>.</p>
+
+<h3 id="o-que-esses-arquivos-fazem">O que esses arquivos fazem?</h3>
+
+<p>O arquivo <code class="highlighter-rouge">App.cs</code> cria uma classe que estende <a href="https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/ViewModels/MvxApplication.cs"><code class="highlighter-rouge">MvxApplication</code></a>. Essa classe é relativamente simples e é a responsável por auxiliar na customização de algumas partes chave do app. Você <strong>deve</strong> fazer <em>override</em> do método <code class="highlighter-rouge">Initialize</code> e dentro dele chamar o método <code class="highlighter-rouge">RegisterAppStart</code>. Esse método pode tanto receber um tipo genérico que implemente <code class="highlighter-rouge">IMvxViewModel</code>, caso onde o Framework sabe que deverá chamar essa ViewModel como a primeira ViewModel do app, assim que tudo for inicializado, quanto uma instancia de uma classe que implemente <a href="https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/ViewModels/IMvxAppStart.cs"><code class="highlighter-rouge">IMvxAppStart</code></a>. Aqui, o Framework irá chamar o método <code class="highlighter-rouge">Start</code> dessa interface e ela irá gerenciar qual ViewModel será exibida. Recomenda-se essa segunda alternativa para quando para quando a lógica de inicialização do seu app for mais complexa.</p>
+
+<p>Já o arquivo <code class="highlighter-rouge">Setup.cs</code> cria uma classe que herda de <a href="https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/Platform/MvxSetup.cs"><code class="highlighter-rouge">MvxSetup</code></a>. A responsabilidade desse tipo é  inicializar o sistema de IoC e chamar a aplicação MvvmCross durante a inicialização do App Nativo. Ele executa uma série de tarefas de inicialização e você pode customizar uma série de componentes fazendo o <em>override</em> de alguns métodos. Isso é necessário apenas em alguns casos mais específicos. Obrigatoriamente, você deve sobrescrever apenas o método <code class="highlighter-rouge">CreateApp</code> (fazendo com que ele retorno a classe <code class="highlighter-rouge">App</code> que existe no Core da aplicação) e com isso você está pronto.</p>
+
+<h3 id="por-onde-tudo-isso--inicializado">Por onde tudo isso é inicializado?</h3>
+
+<p>Que bom que você perguntou! O MvvmCross usa estratégias diferentes de inicialização para cada uma das plataformas. No Android, por exemplo, você cria uma <code class="highlighter-rouge">MvxSplashScreenActivity</code> e a registra como a primeira Activity do seu programa. Quando ela for inicializada, ela criará o objeto de <code class="highlighter-rouge">Setup</code>, que por sua vez cria o <code class="highlighter-rouge">App</code> MvvmCross e desse ponto em diante, toda a sua navegação já está sendo gerenciada pelo MvvmCross.</p>
+
+<p>No iOS, você deve usar uma classe que implemente <a href="https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/iOS/iOS/Platform/IMvxApplicationDelegate.cs">IMvxApplicationDelegate</a> (o jeito mais simples é herdando de  <a href="https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/iOS/iOS/Platform/MvxApplicationDelegate.cs"><code class="highlighter-rouge">MvxApplicationDelegate</code> </a>). Fazendo isso, ele irá construir o Setup e inicializar o seu app dentro do método <code class="highlighter-rouge">FinishedLaunching</code>.  Nas plataformas da Microsoft, algo similar é feito dentro do <code class="highlighter-rouge">App.xaml.cs</code>: Um <code class="highlighter-rouge">Setup</code> é construído e inicializado junto com a plataforma nativa.</p>
+
+<p>É importante lembrar que uma vez que o MvvmCross é inicializado, <strong>toda a navegação deve ser gerenciada por ele</strong> (por meio do método <code class="highlighter-rouge">ShowViewModel</code>). Se você misturar a navegação do MvvmCross com a navegação nativa da plataforma, você eventualmente terá problemas com a gestão do estado do seu app (além de ter que replicar essas navegações em todas as plataformas, já que elas não estarão dentro do código compartilhado). A estrutura de um app MvvmCross é bastante flexível e customizável, portanto se você tiver necessidades específicas de navegação, o ideal é criar um Presenter customizado.</p>
+
+<h3 id="navegao-presenter-h">Navegação? Presenter? Hã?</h3>
+
+<p>Calma, calma, já me explico. As ViewModels, como previamente explicado, servem para expor propriedades e abstrair o modelo para que as Views exibam uma determinada informação. Eu vou explicar isso melhor no próximo post, quando eu falarei sobre <em>DataBinding</em>. Agora uma outra funcionalidade chave é o método <code class="highlighter-rouge">ShowViewModel</code>. Chamamos esse método dentro de uma ViewModel quando queremos navegar para outra página¹ do nosso aplicativo. Isso é um jeito simples de controlar a navegação do nosso app e, já que ele fica no Core da aplicação, garante que todas as plataformas exibirão as mesmas informações de forma consistente.</p>
+
+<p>Para atingir esse objetivo, internamente o método <code class="highlighter-rouge">ShowViewModel</code> faz uso de um objeto que é registrado durante a inicialização do aplicativo. Esse objeto implementa a interface <a href="https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/Views/IMvxViewPresenter.cs"><code class="highlighter-rouge">IMvxViewPresenter</code></a>, que é responsável por definir como cada ViewModel deve ser exibida na tela. O framework vem com implementações de <em>presenters</em> para as plataformas suportadas (para controlar <em>Activities</em> e <em>Fragments</em> no Android, <em>ViewControllers</em> no iOS e <em>Pages</em> no Windows Phone, por exemplo).</p>
+
+<p>Esses <em>Presenters</em> padrão cobrem a maior parte dos casos. Para ocasiões onde você precisa de algo mais específico, o MvvmCross permite que você estenda esses <em>Presenters</em> para realizar essas operações sem que a navegação saia de dentro do escopo do Framework.</p>
+
+<h3 id="e-agora-o-que-devo-fazer">E agora, o que devo fazer?</h3>
+
+<p>Tendo instalado os pacotes necessários e preparado a sua PCL, agora você entende melhor como funciona a estrutura básica de um projeto MvvmCross: Você cria os objetos que inicializam o Framework, usa ViewModels para exibir dados e o método <code class="highlighter-rouge">ShowViewModel</code> cuida da navegação usando os <em>Presenters</em>.</p>
+
+<p>No próximo artigo nós iremos falar sobre a maneira como as informações da ViewModel são exibidas para o usuários: Falaremos sobre <em>DataBinding</em>, que é o mecanismo responsável por manter os dados na View atualizados com o da ViewModel. O assunto abrange desde como criar os bindings usando MvvmCross até a explicação da interface que possibilita o padrão MVVM no .net framework, a <a href="https://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanged%28v=vs.110%29.aspx"><code class="highlighter-rouge">INotifyPropertyChanged</code></a>. Portanto fiquem ligados e até a próxima!</p>
+
+<p>¹ - ViewModels não precisam ser apenas páginas, mas essa é geralmente a associação usada por boa parte dos aplicativos. Falaremos sobre isso mais para frente.</p>
+
+					<div class="meta">
+						<ul class="list-category list-linear">
+							<li class="list-head">category:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/categories#xamarin-ref">
+    		xamarin <span>3</span>
+    	</a></li>
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/tags#mvvm-ref">mvvm <span>2</span></a></li>
+     
+    	<li><a href="/blog/tags#xamarin-ref">xamarin <span>3</span></a></li>
+     
+    	<li><a href="/blog/tags#mvvmcross-ref">mvvmcross <span>2</span></a></li>
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="willdotnet" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/willdotnet" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/xamarin/2016/02/17/episode-I" title="View Episódio I - Preparando uma PCL para Xamarin">&laquo; Episódio I - Preparando uma PCL para Xamarin</a></li>
+							
+							
+							
+						</ul>
+					</nav>
+				</div>
+			</footer>
+					
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+				</div><!-- misc-content -->
+				
+			</div><!-- bd -->
+
+		</div><!-- content -->
+	</div><!-- unit-inner -->
+</article>
+
+
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
+</div><!-- page -->
+<script>
+	(function(d, s) {
+		var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.src = url; js.id = id;
+		fjs.parentNode.insertBefore(js, fjs);
+		};
+	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/xamarin/2016/02/24/episode-II" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	}(document, 'script'));
+</script>
+<script>
+/*! A fix for the iOS orientationchange zoom bug.Script by @scottjehl, rebound by @wilto. MIT License.*/
+(function(j){var i=j.document;if(!i.querySelectorAll){return}var l=i.querySelectorAll("meta[name=viewport]")[0],a=l&&l.getAttribute("content"),h=a+", maximum-scale=1.0",d=a+", maximum-scale=10.0",g=true,c=j.orientation,k=0;if(!l){return}function f(){l.setAttribute("content",d);g=true}function b(){l.setAttribute("content",h);g=false}function e(m){c=Math.abs(j.orientation);k=Math.abs(m.gamma);if(k>8&&c===0){if(g){b()}}else{if(!g){f()}}}j.addEventListener("orientationchange",f,false);j.addEventListener("deviceorientation",e,false)})(this);
+</script>
+
+  
+
+
+
+</body>
+</html>
+

@@ -4,7 +4,7 @@
  <title>William Barbosa</title>
  <link href="http://willsb.github.io/atom.xml" rel="self"/>
  <link href="http://willsb.github.io"/>
- <updated>2016-02-17T20:00:50-02:00</updated>
+ <updated>2016-02-24T22:57:52-03:00</updated>
  <id>http://willsb.github.io</id>
  <author>
    <name>William Barbosa</name>
@@ -13,11 +13,74 @@
 
  
  <entry>
+   <title>MVV O que? - MVVM aplicado à Xamarin</title>
+   <link href="http://willsb.github.io/xamarin/2016/02/24/episode-II"/>
+   <updated>2016-02-24T00:00:00-03:00</updated>
+   <id>http://willsb.github.io/xamarin/2016/02/24/episode-II</id>
+   <content type="html">
+&lt;p&gt;&lt;img src=&quot;/assets/covers/mvvmwhat.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;episdio-ii---a-estrutura-de-um-app-mvvmcross&quot;&gt;Episódio II - A estrutura de um app MvvmCross&lt;/h3&gt;
+
+&lt;p&gt;Esse post é a continuação da série sobre MvvmCross em Xamarin. Você pode ler o primeiro episódio, uma introdução ao padrão MVVM e ao MvvmCross, &lt;a href=&quot;/xamarin/2016/02/11/episode-I&quot;&gt;aqui&lt;/a&gt;. Também é recomendada a leitura do artigo &lt;a href=&quot;/xamarin/2016/02/17/episode-I&quot;&gt;Preparando uma PCL para Xamarin&lt;/a&gt;, onde eu explico como funcionam PCLs e alguns problemas comuns que acontecem ao cria-las. O post será mais teórico do que prático e servirá para que vocês entendam melhor como funciona uma aplicação MvvmCross, para não ficar as cegas sobre o funcionamento do framework.&lt;/p&gt;
+
+&lt;h3 id=&quot;por-onde-comear&quot;&gt;Por onde começar?&lt;/h3&gt;
+
+&lt;p&gt;Como visto no post anterior, o MvvmCross irá nos ajudar a separar o código para permitir a maior quantidade de reúso entre plataformas. Isso é alcançado colocando todas as regras de negócio e responsabilidades como navegação, comunicação com API e restauração de estado do app dentro de uma PCL. O padrão de nomenclatura dos apps que usam MvvmCross é sempre o mesmo: Uma PCL chamada &lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].Core&lt;/code&gt; e projetos individuais para cada uma das plataformas, sempre usando o padrão &lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].[Nome da plataforma]&lt;/code&gt;. Os nomes usados para cada plataformas são:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].Core&lt;/code&gt; - PCL compartilhada&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].Droid&lt;/code&gt; - Xamarin.Android&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].IOs&lt;/code&gt; - Xamarin.IOs&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].Mac&lt;/code&gt; -Xamarin.Mac&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].Phone&lt;/code&gt; - Windows Phone&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].Store&lt;/code&gt; - Windows Store&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].UWP&lt;/code&gt; - Universal Windows Platform&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[Nome do seu projeto].WPF&lt;/code&gt; - WPF&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ao instalar o pacote nuget &lt;a href=&quot;https://www.nuget.org/packages/MvvmCross.StarterPack/&quot;&gt;MvvmCross.StarterPack&lt;/a&gt;, alguns arquivos serão criados dentro do seu projeto, com base no tipo de projeto em que o pacote foi instalado. Esses arquivos são o mínimo necessário para você começar o seu projeto. No caso de uma PCL, ele irá criar os arquivos &lt;code class=&quot;highlighter-rouge&quot;&gt;App.cs&lt;/code&gt; e &lt;code class=&quot;highlighter-rouge&quot;&gt;FirstViewModel.cs&lt;/code&gt;, respectivamente o ponto de partida da sua aplicação MvvmCross e uma ViewModel básica de exemplo. No caso de projetos de UI, ele tipicamente criará um arquivo &lt;code class=&quot;highlighter-rouge&quot;&gt;Setup.cs&lt;/code&gt;, contendo informações específicas da plataforma sobre o app MvvmCross,  &lt;code class=&quot;highlighter-rouge&quot;&gt;DebugTrace.cs&lt;/code&gt;, que permite customizar o output do console, &lt;code class=&quot;highlighter-rouge&quot;&gt;FirstView.cs&lt;/code&gt;, a View que fará par com a primeira ViewModel e um &lt;code class=&quot;highlighter-rouge&quot;&gt;LinkerPleaseInclude.cs&lt;/code&gt;. Falarei mais sobre esses em outro artigo, pois hoje nós iremos nos focar no &lt;code class=&quot;highlighter-rouge&quot;&gt;App&lt;/code&gt; e no &lt;code class=&quot;highlighter-rouge&quot;&gt;Setup&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;o-que-esses-arquivos-fazem&quot;&gt;O que esses arquivos fazem?&lt;/h3&gt;
+
+&lt;p&gt;O arquivo &lt;code class=&quot;highlighter-rouge&quot;&gt;App.cs&lt;/code&gt; cria uma classe que estende &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/ViewModels/MvxApplication.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MvxApplication&lt;/code&gt;&lt;/a&gt;. Essa classe é relativamente simples e é a responsável por auxiliar na customização de algumas partes chave do app. Você &lt;strong&gt;deve&lt;/strong&gt; fazer &lt;em&gt;override&lt;/em&gt; do método &lt;code class=&quot;highlighter-rouge&quot;&gt;Initialize&lt;/code&gt; e dentro dele chamar o método &lt;code class=&quot;highlighter-rouge&quot;&gt;RegisterAppStart&lt;/code&gt;. Esse método pode tanto receber um tipo genérico que implemente &lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxViewModel&lt;/code&gt;, caso onde o Framework sabe que deverá chamar essa ViewModel como a primeira ViewModel do app, assim que tudo for inicializado, quanto uma instancia de uma classe que implemente &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/ViewModels/IMvxAppStart.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxAppStart&lt;/code&gt;&lt;/a&gt;. Aqui, o Framework irá chamar o método &lt;code class=&quot;highlighter-rouge&quot;&gt;Start&lt;/code&gt; dessa interface e ela irá gerenciar qual ViewModel será exibida. Recomenda-se essa segunda alternativa para quando para quando a lógica de inicialização do seu app for mais complexa.&lt;/p&gt;
+
+&lt;p&gt;Já o arquivo &lt;code class=&quot;highlighter-rouge&quot;&gt;Setup.cs&lt;/code&gt; cria uma classe que herda de &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/Platform/MvxSetup.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MvxSetup&lt;/code&gt;&lt;/a&gt;. A responsabilidade desse tipo é  inicializar o sistema de IoC e chamar a aplicação MvvmCross durante a inicialização do App Nativo. Ele executa uma série de tarefas de inicialização e você pode customizar uma série de componentes fazendo o &lt;em&gt;override&lt;/em&gt; de alguns métodos. Isso é necessário apenas em alguns casos mais específicos. Obrigatoriamente, você deve sobrescrever apenas o método &lt;code class=&quot;highlighter-rouge&quot;&gt;CreateApp&lt;/code&gt; (fazendo com que ele retorno a classe &lt;code class=&quot;highlighter-rouge&quot;&gt;App&lt;/code&gt; que existe no Core da aplicação) e com isso você está pronto.&lt;/p&gt;
+
+&lt;h3 id=&quot;por-onde-tudo-isso--inicializado&quot;&gt;Por onde tudo isso é inicializado?&lt;/h3&gt;
+
+&lt;p&gt;Que bom que você perguntou! O MvvmCross usa estratégias diferentes de inicialização para cada uma das plataformas. No Android, por exemplo, você cria uma &lt;code class=&quot;highlighter-rouge&quot;&gt;MvxSplashScreenActivity&lt;/code&gt; e a registra como a primeira Activity do seu programa. Quando ela for inicializada, ela criará o objeto de &lt;code class=&quot;highlighter-rouge&quot;&gt;Setup&lt;/code&gt;, que por sua vez cria o &lt;code class=&quot;highlighter-rouge&quot;&gt;App&lt;/code&gt; MvvmCross e desse ponto em diante, toda a sua navegação já está sendo gerenciada pelo MvvmCross.&lt;/p&gt;
+
+&lt;p&gt;No iOS, você deve usar uma classe que implemente &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/iOS/iOS/Platform/IMvxApplicationDelegate.cs&quot;&gt;IMvxApplicationDelegate&lt;/a&gt; (o jeito mais simples é herdando de  &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/iOS/iOS/Platform/MvxApplicationDelegate.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MvxApplicationDelegate&lt;/code&gt; &lt;/a&gt;). Fazendo isso, ele irá construir o Setup e inicializar o seu app dentro do método &lt;code class=&quot;highlighter-rouge&quot;&gt;FinishedLaunching&lt;/code&gt;.  Nas plataformas da Microsoft, algo similar é feito dentro do &lt;code class=&quot;highlighter-rouge&quot;&gt;App.xaml.cs&lt;/code&gt;: Um &lt;code class=&quot;highlighter-rouge&quot;&gt;Setup&lt;/code&gt; é construído e inicializado junto com a plataforma nativa.&lt;/p&gt;
+
+&lt;p&gt;É importante lembrar que uma vez que o MvvmCross é inicializado, &lt;strong&gt;toda a navegação deve ser gerenciada por ele&lt;/strong&gt; (por meio do método &lt;code class=&quot;highlighter-rouge&quot;&gt;ShowViewModel&lt;/code&gt;). Se você misturar a navegação do MvvmCross com a navegação nativa da plataforma, você eventualmente terá problemas com a gestão do estado do seu app (além de ter que replicar essas navegações em todas as plataformas, já que elas não estarão dentro do código compartilhado). A estrutura de um app MvvmCross é bastante flexível e customizável, portanto se você tiver necessidades específicas de navegação, o ideal é criar um Presenter customizado.&lt;/p&gt;
+
+&lt;h3 id=&quot;navegao-presenter-h&quot;&gt;Navegação? Presenter? Hã?&lt;/h3&gt;
+
+&lt;p&gt;Calma, calma, já me explico. As ViewModels, como previamente explicado, servem para expor propriedades e abstrair o modelo para que as Views exibam uma determinada informação. Eu vou explicar isso melhor no próximo post, quando eu falarei sobre &lt;em&gt;DataBinding&lt;/em&gt;. Agora uma outra funcionalidade chave é o método &lt;code class=&quot;highlighter-rouge&quot;&gt;ShowViewModel&lt;/code&gt;. Chamamos esse método dentro de uma ViewModel quando queremos navegar para outra página¹ do nosso aplicativo. Isso é um jeito simples de controlar a navegação do nosso app e, já que ele fica no Core da aplicação, garante que todas as plataformas exibirão as mesmas informações de forma consistente.&lt;/p&gt;
+
+&lt;p&gt;Para atingir esse objetivo, internamente o método &lt;code class=&quot;highlighter-rouge&quot;&gt;ShowViewModel&lt;/code&gt; faz uso de um objeto que é registrado durante a inicialização do aplicativo. Esse objeto implementa a interface &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/Views/IMvxViewPresenter.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxViewPresenter&lt;/code&gt;&lt;/a&gt;, que é responsável por definir como cada ViewModel deve ser exibida na tela. O framework vem com implementações de &lt;em&gt;presenters&lt;/em&gt; para as plataformas suportadas (para controlar &lt;em&gt;Activities&lt;/em&gt; e &lt;em&gt;Fragments&lt;/em&gt; no Android, &lt;em&gt;ViewControllers&lt;/em&gt; no iOS e &lt;em&gt;Pages&lt;/em&gt; no Windows Phone, por exemplo).&lt;/p&gt;
+
+&lt;p&gt;Esses &lt;em&gt;Presenters&lt;/em&gt; padrão cobrem a maior parte dos casos. Para ocasiões onde você precisa de algo mais específico, o MvvmCross permite que você estenda esses &lt;em&gt;Presenters&lt;/em&gt; para realizar essas operações sem que a navegação saia de dentro do escopo do Framework.&lt;/p&gt;
+
+&lt;h3 id=&quot;e-agora-o-que-devo-fazer&quot;&gt;E agora, o que devo fazer?&lt;/h3&gt;
+
+&lt;p&gt;Tendo instalado os pacotes necessários e preparado a sua PCL, agora você entende melhor como funciona a estrutura básica de um projeto MvvmCross: Você cria os objetos que inicializam o Framework, usa ViewModels para exibir dados e o método &lt;code class=&quot;highlighter-rouge&quot;&gt;ShowViewModel&lt;/code&gt; cuida da navegação usando os &lt;em&gt;Presenters&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;No próximo artigo nós iremos falar sobre a maneira como as informações da ViewModel são exibidas para o usuários: Falaremos sobre &lt;em&gt;DataBinding&lt;/em&gt;, que é o mecanismo responsável por manter os dados na View atualizados com o da ViewModel. O assunto abrange desde como criar os bindings usando MvvmCross até a explicação da interface que possibilita o padrão MVVM no .net framework, a &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanged%28v=vs.110%29.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;INotifyPropertyChanged&lt;/code&gt;&lt;/a&gt;. Portanto fiquem ligados e até a próxima!&lt;/p&gt;
+
+&lt;p&gt;¹ - ViewModels não precisam ser apenas páginas, mas essa é geralmente a associação usada por boa parte dos aplicativos. Falaremos sobre isso mais para frente.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>await willsb.PreparePCLAsync();</title>
    <link href="http://willsb.github.io/xamarin/2016/02/17/episode-I"/>
    <updated>2016-02-17T00:00:00-02:00</updated>
    <id>http://willsb.github.io/xamarin/2016/02/17/episode-I</id>
    <content type="html">
+&lt;p&gt;&lt;img src=&quot;/assets/covers/pclasync.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;episdio-i---preparando-uma-pcl-para-xamarin&quot;&gt;Episódio I - Preparando uma PCL para Xamarin&lt;/h3&gt;
 
 &lt;p&gt;Este é um material de apoio que eu publicarei em paralelo à série &lt;a href=&quot;http://willsb.github.io/xamarin/2016/02/11/episode-I&quot;&gt;MVV O que?&lt;/a&gt;. Serão dois posts, onde eu irei ensinar como deixar a sua PCL pronta (além de instruir o que é uma PCL),  e explanar acerca da necessidade de trabalhar com assincronia quando se trata de desenvolvimento Cross-Mobile com Xamarin. Sendo essa uma série assíncrona, as postagens de &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross&quot;&gt;MvvmCross&lt;/a&gt; seguem naturalmente em paralelo :)&lt;/p&gt;
@@ -56,6 +119,8 @@
    <updated>2016-02-11T00:00:00-02:00</updated>
    <id>http://willsb.github.io/xamarin/2016/02/11/episode-I</id>
    <content type="html">
+&lt;p&gt;&lt;img src=&quot;/assets/covers/mvvmwhat.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;episdio-i---introduo--mvvm-e-mvvmcross&quot;&gt;Episódio I - Introdução à MVVM e MVVMCross&lt;/h3&gt;
 
 &lt;p&gt;Este é o primeiro post de uma série de chamada “MVV o que?”. Nesta série eu irei falar do padrão MVVM (Model-View-ViewModel) aplicado em ambiente Android/Windows Phone usando Xamarin. Neste primeiro post, irei falar de conceitos básicos de Xamarin e explicar um pouco do Framework que será utilizado nos exemplos, o &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross&quot;&gt;MvvmCross&lt;/a&gt;.&lt;/p&gt;
@@ -74,7 +139,7 @@
 
 &lt;p&gt;Um deles é a facilidade de testar. ViewModels são classes independentes da interação do usuário. Isso quer dizer que escrever testes de unidade para elas é simples (e bastante aconselhável). Isso nos leva a um outro ponto crucial para o MVVM casar com o Xamarin: as ViewModels são independentes das Views. Idealmente, ViewModels nem sabem que uma View existe, portanto a mesma ViewModel pode ser usada por mais de uma interface!&lt;/p&gt;
 
-&lt;p&gt;“Legal, uma VM serve para muitas Views. E dai?”, você se pergunta. A resposta é: Essa é exatamente a proposta do Xamarin! Reuso do mesmo código para gerar apps em muitas plataformas. Ou seja, uma ViewModel escrita em C# pode reger as Views que vão ser usadas no seu app Android, iOS e Windows Phone! Wow!&lt;/p&gt;
+&lt;p&gt;“Legal, uma VM serve para muitas Views. E dai?”, você se pergunta. A resposta é: Essa é exatamente a proposta do Xamarin! Reúso do mesmo código para gerar apps em muitas plataformas. Ou seja, uma ViewModel escrita em C# pode reger as Views que vão ser usadas no seu app Android, iOS e Windows Phone! Wow!&lt;/p&gt;
 
 &lt;h3 id=&quot;e-como-isso-tudo-funciona-com-xamarin&quot;&gt;E como isso tudo funciona com Xamarin?&lt;/h3&gt;
 

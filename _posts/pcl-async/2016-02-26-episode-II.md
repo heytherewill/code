@@ -7,6 +7,8 @@ tags : [pcl, async, xamarin]
 ---
 {% include JB/setup %}
 
+![Cover](/assets/covers/pclasync.png)
+
 ### Episódio II - A importância de usar async
 
 Na episódio passado, falamos sobre PCLs e seus usos para o desenvolvimento cross mobile. Elas são uteis pois aumentam o reuso de código, reduzindo assim a dor de cabeça na hora de corrigir bugs e melhorando a manutenibilidade do seu projeto como um todo. Um dos pontos cruciais na hora de criar uma PCL é instalar os Nugets de async e de http. A parte de rede é fácil de entender (boa parte das aplicações podem ser resumidas em pegar dados do servidor e exibi-los na tela) e nesse post iremos entender porque o pacote de assincronia é tão importante quanto.

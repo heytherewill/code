@@ -24,22 +24,22 @@
 			<div class="unit-inner unit-head-inner">
 				<a class="title" href="/blog">William Barbosa</a>
 					<ul>
-						<li class="email">
+						<li class="icon email">
 							<a href="mailto:william.sb@hotmail.com" rel="me">
 								<i class="fi-mail"></i>
 							</a>
 						</li>
-						<li class="github">
+						<li class="icon github">
 							<a href="http://github.com/willsb/" rel="me">
 								<i class="fi-social-github"></i>
 							</a>
 						</li>
-						<li class="facebook">
+						<li class="icon facebook">
 							<a href="http://fb.com/Willkuns/" rel="me">
 								<i class="fi-social-facebook"></i>
 							</a>
 						</li>
-						<li class="twitter">
+						<li class="icon twitter">
 							<a class="fi-social-twitter" href="http://twitter.com/willdotnet/" rel="me">
 								<i ></i>
 							</a>
@@ -60,6 +60,7 @@
 				<div class="unit-head">
 					<div class="unit-inner unit-head-inner">
 						<h1 class="h2 entry-title">MVV O que? - MVVM aplicado à Xamarin</h1>
+						<h6 class="publish-date"> Publicado em 11/02/2016 </h6>
 					</div><!-- unit-inner -->
 				</div><!-- unit-head -->
 			</header>
@@ -67,6 +68,8 @@
 			<div class="bd">
 				<div class="entry-content">
 					
+<p><img src="/assets/covers/mvvmwhat.png" alt="Cover" /></p>
+
 <h3 id="episdio-i---introduo--mvvm-e-mvvmcross">Episódio I - Introdução à MVVM e MVVMCross</h3>
 
 <p>Este é o primeiro post de uma série de chamada “MVV o que?”. Nesta série eu irei falar do padrão MVVM (Model-View-ViewModel) aplicado em ambiente Android/Windows Phone usando Xamarin. Neste primeiro post, irei falar de conceitos básicos de Xamarin e explicar um pouco do Framework que será utilizado nos exemplos, o <a href="https://github.com/MvvmCross/MvvmCross">MvvmCross</a>.</p>
@@ -85,7 +88,7 @@
 
 <p>Um deles é a facilidade de testar. ViewModels são classes independentes da interação do usuário. Isso quer dizer que escrever testes de unidade para elas é simples (e bastante aconselhável). Isso nos leva a um outro ponto crucial para o MVVM casar com o Xamarin: as ViewModels são independentes das Views. Idealmente, ViewModels nem sabem que uma View existe, portanto a mesma ViewModel pode ser usada por mais de uma interface!</p>
 
-<p>“Legal, uma VM serve para muitas Views. E dai?”, você se pergunta. A resposta é: Essa é exatamente a proposta do Xamarin! Reuso do mesmo código para gerar apps em muitas plataformas. Ou seja, uma ViewModel escrita em C# pode reger as Views que vão ser usadas no seu app Android, iOS e Windows Phone! Wow!</p>
+<p>“Legal, uma VM serve para muitas Views. E dai?”, você se pergunta. A resposta é: Essa é exatamente a proposta do Xamarin! Reúso do mesmo código para gerar apps em muitas plataformas. Ou seja, uma ViewModel escrita em C# pode reger as Views que vão ser usadas no seu app Android, iOS e Windows Phone! Wow!</p>
 
 <h3 id="e-como-isso-tudo-funciona-com-xamarin">E como isso tudo funciona com Xamarin?</h3>
 
@@ -102,14 +105,6 @@
 <p>Mesmo sem ter acesso à uma conta Xamarin paga, você pode iniciar um período de 30 dias de trial para praticar com apps Android/iOS e os exemplos usados aqui irão sempre cobrir UWP (Universal Windows Platform) para que todos possam aprender :)</p>
 
 					<div class="meta">
-						<p class="date-publish">
-							Published: 
-							<date class="date-pub" title="2016-02-11T00:00:00-02:00" datetime="2016-02-11T00:00:00-02:00" pubdate>
-							<span class="month"><abbr>February</abbr></span>
-							<span class="day">11</span>
-							<span class="year">2016</span>
-							</date>
-						</p>
 						<ul class="list-category list-linear">
 							<li class="list-head">category:   </li>
 							
@@ -119,7 +114,7 @@
   
      
     	<li><a href="/blog/categories#xamarin-ref">
-    		xamarin <span>2</span>
+    		xamarin <span>3</span>
     	</a></li>
     
   
@@ -134,11 +129,11 @@
 
   
      
-    	<li><a href="/blog/tags#mvvm-ref">mvvm <span>1</span></a></li>
+    	<li><a href="/blog/tags#mvvm-ref">mvvm <span>2</span></a></li>
      
-    	<li><a href="/blog/tags#xamarin-ref">xamarin <span>2</span></a></li>
+    	<li><a href="/blog/tags#xamarin-ref">xamarin <span>3</span></a></li>
      
-    	<li><a href="/blog/tags#mvvmcross-ref">mvvmcross <span>1</span></a></li>
+    	<li><a href="/blog/tags#mvvmcross-ref">mvvmcross <span>2</span></a></li>
     
   
 
@@ -155,6 +150,19 @@
 						</ul>
 					</div>
 					
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							
+							
+							<li class="next"><a class="internal" rel="next"  href="/xamarin/2016/02/17/episode-I" title="View Episódio I - Preparando uma PCL para Xamarin">Episódio I - Preparando uma PCL para Xamarin &raquo;</a></li>
+							
+						</ul>
+					</nav>
+				</div>
+			</footer>
 					
 
 
@@ -180,22 +188,6 @@
 				</div><!-- misc-content -->
 				
 			</div><!-- bd -->
-			<footer class="unit-foot">
-				<div class="unit-inner unit-foot-inner">
-					<nav class="pagination">
-						<ul>
-							
-							
-							
-							<li class="next"><a class="internal" rel="next"  href="/xamarin/2016/02/17/episode-I" title="View await willsb.PreparePCLAsync();">await willsb.PreparePCLAsync(); &raquo;</a></li>
-							
-						</ul>
-					</nav>
-					<p class="gotop">
-						<a href="#page">Back to Top</a>
-					</p>
-				</div>
-			</footer>
 
 		</div><!-- content -->
 	</div><!-- unit-inner -->
