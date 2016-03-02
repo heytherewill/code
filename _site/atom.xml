@@ -4,13 +4,55 @@
  <title>William Barbosa</title>
  <link href="http://willsb.github.io/atom.xml" rel="self"/>
  <link href="http://willsb.github.io"/>
- <updated>2016-02-24T22:57:52-03:00</updated>
+ <updated>2016-03-02T19:12:31-03:00</updated>
  <id>http://willsb.github.io</id>
  <author>
    <name>William Barbosa</name>
    <email>william.sb@hotmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>await willsb.PreparePCLAsync();</title>
+   <link href="http://willsb.github.io/xamarin/2016/03/02/episode-II"/>
+   <updated>2016-03-02T00:00:00-03:00</updated>
+   <id>http://willsb.github.io/xamarin/2016/03/02/episode-II</id>
+   <content type="html">
+&lt;p&gt;&lt;img src=&quot;/assets/covers/pclasync.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;episdio-ii---a-importncia-de-usar-async&quot;&gt;Episódio II - A importância de usar async&lt;/h3&gt;
+
+&lt;p&gt;Na episódio passado, falamos sobre PCLs e seus usos para o desenvolvimento cross mobile. Elas são uteis pois aumentam o reuso de código, reduzindo assim a dor de cabeça na hora de corrigir bugs e melhorando a manutenibilidade do seu projeto como um todo. Um dos pontos cruciais na hora de criar uma PCL é instalar os Nugets de async e de http. A parte de rede é fácil de entender (boa parte das aplicações podem ser resumidas em pegar dados do servidor e exibi-los na tela) e nesse post iremos entender porque o pacote de assincronia é tão importante quanto.&lt;/p&gt;
+
+&lt;h3 id=&quot;async&quot;&gt;Async?&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt; é um modificador que foi adicionado no versão 5 do C#. Ele, em par com o operador &lt;code class=&quot;highlighter-rouge&quot;&gt;await&lt;/code&gt;, existem para facilitar o uso de código assíncrono escrito em C#. O uso dessa feature facilita e muito a programação assincrona. Código que antes precisaria de um callback (uma função que é executada quando a primeiro termina, de forma a permitir que o código prossiga de forma linear) agora pode ser escrito em sequência.&lt;/p&gt;
+
+&lt;p&gt;Funções que usam o modificador &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt; devem retornar uma &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.threading.tasks.task%28v=vs.110%29.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Task&lt;/code&gt;&lt;/a&gt; ou uma &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/dd321424%28v=vs.110%29.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Task&amp;lt;TResult&amp;gt;&lt;/code&gt;&lt;/a&gt;. Isso acontece porque uma &lt;code class=&quot;highlighter-rouge&quot;&gt;Task&lt;/code&gt; é algo a ser resolvido (um conceito chamado future), então toda a parte de assincronia da linguagem foi construída com base no uso dela.&lt;/p&gt;
+
+&lt;p&gt;Uma única exceção disso é que métodos &lt;code class=&quot;highlighter-rouge&quot;&gt;void&lt;/code&gt; podem ser &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt;. Isso ocorre em parte porque você pode precisar utilizar &lt;code class=&quot;highlighter-rouge&quot;&gt;await&lt;/code&gt; dentro de eventos ou métodos de um framework. Existe pequenas diferenças entre &lt;code class=&quot;highlighter-rouge&quot;&gt;async void&lt;/code&gt; e &lt;code class=&quot;highlighter-rouge&quot;&gt;async Task&lt;/code&gt;, e elas são melhor explicadas &lt;a href=&quot;https://msdn.microsoft.com/en-us/magazine/jj991977.aspx&quot;&gt;neste artigo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;e-por-que-isso--to-importante&quot;&gt;E por que isso é tão importante?&lt;/h3&gt;
+
+&lt;p&gt;Quando se desenvolve para Xamarin, é muito fácil esquecer que o seu código irá rodar em celulares, mas é muito importante manter isso em mente o tempo todo. Lembre-se que celulares são limitados em termos de memória e bateria, portanto seu app &lt;strong&gt;não pode travar a thread principal, que é a responsável pela UI.&lt;/strong&gt; Muitas pessoas esquecem disso e acabam com um app que trava por vários segundos enquanto você acessa a internet ou faz algum processamento pesado, o que é frustrante para o usuário, que acha que seu app deu &lt;em&gt;crash&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Quando você usa o operador &lt;code class=&quot;highlighter-rouge&quot;&gt;await&lt;/code&gt; dentro de uma função &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt;, o compilador gera uma máquina de estados que é capaz de pausar a execução do método atual em um determinado ponto, continuar a execução do thread principal e apenas retornar a execução quando a chamada do método terminar. Isso libera o thread principal, permitindo que a tela continue sendo atualizada enquanto você está fazendo a sua operação cara (como acessar a internet ou mudar o tamanho de uma imagem).&lt;/p&gt;
+
+&lt;h3 id=&quot;eu-tenho-um-mtodo-que-pode-ser-assncrono-como-fao&quot;&gt;Eu tenho um método que pode ser assíncrono, como faço?&lt;/h3&gt;
+
+&lt;p&gt;Existe um padrão dentro dos métodos do .net framework que é sempre nomear os métodos que retornam &lt;code class=&quot;highlighter-rouge&quot;&gt;Task&lt;/code&gt; com o sufixo Async. Sendo assim, se você tem um método que você considera que pode ser assíncrono, basta verificar se ele já tem uma versão async, como é o caso dos método &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.io.stream.flush%28v=vs.110%29.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Flush&lt;/code&gt;&lt;/a&gt; e &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/hh193384%28v=vs.110%29.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;FlushAsync&lt;/code&gt;&lt;/a&gt;. No caso de Streams e Http, você poderá trabalhar com async sem se preocupar em implementar nada. Basta garantir que seus métodos retornam Tasks e usar await direitinho que tudo funcionará. Já quando você precisa fazer seus próprios métodos assíncronos, existem dois jeitos simples de faze-lo Um é usando &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/dd449174%28v=vs.110%29.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;TaskCompletionSource&lt;/code&gt;&lt;/a&gt; e o outro é usando &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.threading.tasks.task.run%28v=vs.110%29.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Task.Run&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Uma regra que pode ser seguida é usar o &lt;code class=&quot;highlighter-rouge&quot;&gt;TaskCompletionSource&lt;/code&gt; (TCS) quando você precisa transformar um callback em uma &lt;code class=&quot;highlighter-rouge&quot;&gt;Task&lt;/code&gt;. Eu uso muito esse tipo de pattern quando eu preciso de um DialogBox, por exemplo. Você cria uma &lt;code class=&quot;highlighter-rouge&quot;&gt;TaskCompletionSource&amp;lt;bool&amp;gt;&lt;/code&gt;, usa o método &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/dd449202%28v=vs.110%29.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SetResult&lt;/code&gt;&lt;/a&gt; como um callback que é chamado quando o  dialog some e em seguida retorna a &lt;code class=&quot;highlighter-rouge&quot;&gt;Task&lt;/code&gt; atrelada ao TCS. Se o usuário clicar em “Ok”, você chama o callback com &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt; ou então usa &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt; caso contrário. O resultado é um DialogBox que pode ser aguardado.&lt;/p&gt;
+
+&lt;p&gt;Já o &lt;code class=&quot;highlighter-rouge&quot;&gt;Task.Run&lt;/code&gt;serve para você executar um trecha de código (uma &lt;code class=&quot;highlighter-rouge&quot;&gt;Action&lt;/code&gt;) de forma assíncrona. Esse é um pouco mais difícil de se saber quando usar, portanto lembre-se que &lt;a href=&quot;https://pt.wikipedia.org/wiki/Charles_Antony_Richard_Hoare&quot;&gt;a otimização prematura é a raiz de todo mal&lt;/a&gt;. Por mais tentador que seja, não mude todos os seus métodos para rodar de forma assíncrona indiscriminadamente. Assincronia não deixa o seu código mais rápido, apenas permite que você faça mais coisas por vez.&lt;/p&gt;
+
+&lt;h3 id=&quot;srio-que--fcil-assim&quot;&gt;Sério que é fácil assim?&lt;/h3&gt;
+
+&lt;p&gt;Nem tanto. É importante lembrar que chamadas assíncronas &lt;strong&gt;não garantem a continuação da execução do método no Main Thread&lt;/strong&gt;. Isso quer dizer que, depois que o processamento pesado acabar, seu método pode ou não voltar a ser executado na thread principal. Isso é um perigo, pois existem certas operações que só podem acontecer na main thread (manipulação de uma &lt;code class=&quot;highlighter-rouge&quot;&gt;View&lt;/code&gt; que foi inicialmente manipulada no Main Thread é um exemplo). Portanto sempre que for usar métodos assíncronos é importante garantir que a continuação desses métodos pode rodar em uma thread separada.&lt;/p&gt;
+
+&lt;p&gt;Finalizando, sempre que você perceber que seu app está travando sempre no mesmo ponto por estar fazendo trabalho demais na thread principal, considere mudar alguma chamada para &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt;. Isso pode te ajudar (e muito). A execução dessa série acaba aqui, então você já pode voltar para a thread principal e continuar acompanhando a série “Mvv O que?”. Até a próxima!&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>MVV O que? - MVVM aplicado à Xamarin</title>

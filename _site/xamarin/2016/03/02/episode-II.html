@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>await willsb.PreparePCLAsync();</title>
+	<meta name="author" content="William Barbosa">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" media="all">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.eot" rel="stylesheet" media="all">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='/assets/themes//css/style.css' rel="stylesheet" media="all">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="await willsb.PreparePCLAsync();" type="application/atom+xml">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="hentry">
+	<header class="the-header">
+		<div class="unit-head">
+			<div class="unit-inner unit-head-inner">
+				<a class="title" href="/blog">William Barbosa</a>
+					<ul>
+						<li class="icon email">
+							<a href="mailto:william.sb@hotmail.com" rel="me">
+								<i class="fi-mail"></i>
+							</a>
+						</li>
+						<li class="icon github">
+							<a href="http://github.com/willsb/" rel="me">
+								<i class="fi-social-github"></i>
+							</a>
+						</li>
+						<li class="icon facebook">
+							<a href="http://fb.com/Willkuns/" rel="me">
+								<i class="fi-social-facebook"></i>
+							</a>
+						</li>
+						<li class="icon twitter">
+							<a class="fi-social-twitter" href="http://twitter.com/willdotnet/" rel="me">
+								<i ></i>
+							</a>
+						</li>
+					</ul>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					
+<article class="unit-article layout-post">
+	<div class="unit-inner unit-article-inner">
+		<div class="content">
+			<header>
+				<div class="unit-head">
+					<div class="unit-inner unit-head-inner">
+						<h1 class="h2 entry-title">await willsb.PreparePCLAsync();</h1>
+						<h6 class="publish-date"> Publicado em 02/03/2016 </h6>
+					</div><!-- unit-inner -->
+				</div><!-- unit-head -->
+			</header>
+
+			<div class="bd">
+				<div class="entry-content">
+					
+<p><img src="/assets/covers/pclasync.png" alt="Cover" /></p>
+
+<h3 id="episdio-ii---a-importncia-de-usar-async">Episódio II - A importância de usar async</h3>
+
+<p>Na episódio passado, falamos sobre PCLs e seus usos para o desenvolvimento cross mobile. Elas são uteis pois aumentam o reuso de código, reduzindo assim a dor de cabeça na hora de corrigir bugs e melhorando a manutenibilidade do seu projeto como um todo. Um dos pontos cruciais na hora de criar uma PCL é instalar os Nugets de async e de http. A parte de rede é fácil de entender (boa parte das aplicações podem ser resumidas em pegar dados do servidor e exibi-los na tela) e nesse post iremos entender porque o pacote de assincronia é tão importante quanto.</p>
+
+<h3 id="async">Async?</h3>
+
+<p><code class="highlighter-rouge">async</code> é um modificador que foi adicionado no versão 5 do C#. Ele, em par com o operador <code class="highlighter-rouge">await</code>, existem para facilitar o uso de código assíncrono escrito em C#. O uso dessa feature facilita e muito a programação assincrona. Código que antes precisaria de um callback (uma função que é executada quando a primeiro termina, de forma a permitir que o código prossiga de forma linear) agora pode ser escrito em sequência.</p>
+
+<p>Funções que usam o modificador <code class="highlighter-rouge">async</code> devem retornar uma <a href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task%28v=vs.110%29.aspx"><code class="highlighter-rouge">Task</code></a> ou uma <a href="https://msdn.microsoft.com/en-us/library/dd321424%28v=vs.110%29.aspx"><code class="highlighter-rouge">Task&lt;TResult&gt;</code></a>. Isso acontece porque uma <code class="highlighter-rouge">Task</code> é algo a ser resolvido (um conceito chamado future), então toda a parte de assincronia da linguagem foi construída com base no uso dela.</p>
+
+<p>Uma única exceção disso é que métodos <code class="highlighter-rouge">void</code> podem ser <code class="highlighter-rouge">async</code>. Isso ocorre em parte porque você pode precisar utilizar <code class="highlighter-rouge">await</code> dentro de eventos ou métodos de um framework. Existe pequenas diferenças entre <code class="highlighter-rouge">async void</code> e <code class="highlighter-rouge">async Task</code>, e elas são melhor explicadas <a href="https://msdn.microsoft.com/en-us/magazine/jj991977.aspx">neste artigo</a>.</p>
+
+<h3 id="e-por-que-isso--to-importante">E por que isso é tão importante?</h3>
+
+<p>Quando se desenvolve para Xamarin, é muito fácil esquecer que o seu código irá rodar em celulares, mas é muito importante manter isso em mente o tempo todo. Lembre-se que celulares são limitados em termos de memória e bateria, portanto seu app <strong>não pode travar a thread principal, que é a responsável pela UI.</strong> Muitas pessoas esquecem disso e acabam com um app que trava por vários segundos enquanto você acessa a internet ou faz algum processamento pesado, o que é frustrante para o usuário, que acha que seu app deu <em>crash</em>.</p>
+
+<p>Quando você usa o operador <code class="highlighter-rouge">await</code> dentro de uma função <code class="highlighter-rouge">async</code>, o compilador gera uma máquina de estados que é capaz de pausar a execução do método atual em um determinado ponto, continuar a execução do thread principal e apenas retornar a execução quando a chamada do método terminar. Isso libera o thread principal, permitindo que a tela continue sendo atualizada enquanto você está fazendo a sua operação cara (como acessar a internet ou mudar o tamanho de uma imagem).</p>
+
+<h3 id="eu-tenho-um-mtodo-que-pode-ser-assncrono-como-fao">Eu tenho um método que pode ser assíncrono, como faço?</h3>
+
+<p>Existe um padrão dentro dos métodos do .net framework que é sempre nomear os métodos que retornam <code class="highlighter-rouge">Task</code> com o sufixo Async. Sendo assim, se você tem um método que você considera que pode ser assíncrono, basta verificar se ele já tem uma versão async, como é o caso dos método <a href="https://msdn.microsoft.com/en-us/library/system.io.stream.flush%28v=vs.110%29.aspx"><code class="highlighter-rouge">Flush</code></a> e <a href="https://msdn.microsoft.com/en-us/library/hh193384%28v=vs.110%29.aspx"><code class="highlighter-rouge">FlushAsync</code></a>. No caso de Streams e Http, você poderá trabalhar com async sem se preocupar em implementar nada. Basta garantir que seus métodos retornam Tasks e usar await direitinho que tudo funcionará. Já quando você precisa fazer seus próprios métodos assíncronos, existem dois jeitos simples de faze-lo Um é usando <a href="https://msdn.microsoft.com/en-us/library/dd449174%28v=vs.110%29.aspx"><code class="highlighter-rouge">TaskCompletionSource</code></a> e o outro é usando <a href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task.run%28v=vs.110%29.aspx"><code class="highlighter-rouge">Task.Run</code></a>.</p>
+
+<p>Uma regra que pode ser seguida é usar o <code class="highlighter-rouge">TaskCompletionSource</code> (TCS) quando você precisa transformar um callback em uma <code class="highlighter-rouge">Task</code>. Eu uso muito esse tipo de pattern quando eu preciso de um DialogBox, por exemplo. Você cria uma <code class="highlighter-rouge">TaskCompletionSource&lt;bool&gt;</code>, usa o método <a href="https://msdn.microsoft.com/en-us/library/dd449202%28v=vs.110%29.aspx"><code class="highlighter-rouge">SetResult</code></a> como um callback que é chamado quando o  dialog some e em seguida retorna a <code class="highlighter-rouge">Task</code> atrelada ao TCS. Se o usuário clicar em “Ok”, você chama o callback com <code class="highlighter-rouge">true</code> ou então usa <code class="highlighter-rouge">false</code> caso contrário. O resultado é um DialogBox que pode ser aguardado.</p>
+
+<p>Já o <code class="highlighter-rouge">Task.Run</code>serve para você executar um trecha de código (uma <code class="highlighter-rouge">Action</code>) de forma assíncrona. Esse é um pouco mais difícil de se saber quando usar, portanto lembre-se que <a href="https://pt.wikipedia.org/wiki/Charles_Antony_Richard_Hoare">a otimização prematura é a raiz de todo mal</a>. Por mais tentador que seja, não mude todos os seus métodos para rodar de forma assíncrona indiscriminadamente. Assincronia não deixa o seu código mais rápido, apenas permite que você faça mais coisas por vez.</p>
+
+<h3 id="srio-que--fcil-assim">Sério que é fácil assim?</h3>
+
+<p>Nem tanto. É importante lembrar que chamadas assíncronas <strong>não garantem a continuação da execução do método no Main Thread</strong>. Isso quer dizer que, depois que o processamento pesado acabar, seu método pode ou não voltar a ser executado na thread principal. Isso é um perigo, pois existem certas operações que só podem acontecer na main thread (manipulação de uma <code class="highlighter-rouge">View</code> que foi inicialmente manipulada no Main Thread é um exemplo). Portanto sempre que for usar métodos assíncronos é importante garantir que a continuação desses métodos pode rodar em uma thread separada.</p>
+
+<p>Finalizando, sempre que você perceber que seu app está travando sempre no mesmo ponto por estar fazendo trabalho demais na thread principal, considere mudar alguma chamada para <code class="highlighter-rouge">async</code>. Isso pode te ajudar (e muito). A execução dessa série acaba aqui, então você já pode voltar para a thread principal e continuar acompanhando a série “Mvv O que?”. Até a próxima!</p>
+
+					<div class="meta">
+						<ul class="list-category list-linear">
+							<li class="list-head">category:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/categories#xamarin-ref">
+    		xamarin <span>4</span>
+    	</a></li>
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/tags#pcl-ref">pcl <span>2</span></a></li>
+     
+    	<li><a href="/blog/tags#async-ref">async <span>2</span></a></li>
+     
+    	<li><a href="/blog/tags#xamarin-ref">xamarin <span>4</span></a></li>
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="willdotnet" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/willdotnet" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/xamarin/2016/02/24/episode-II" title="View Episódio II - A estrutura de um app MvvmCross">&laquo; Episódio II - A estrutura de um app MvvmCross</a></li>
+							
+							
+							
+						</ul>
+					</nav>
+				</div>
+			</footer>
+					
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+				</div><!-- misc-content -->
+				
+			</div><!-- bd -->
+
+		</div><!-- content -->
+	</div><!-- unit-inner -->
+</article>
+
+
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
+</div><!-- page -->
+<script>
+	(function(d, s) {
+		var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.src = url; js.id = id;
+		fjs.parentNode.insertBefore(js, fjs);
+		};
+	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/xamarin/2016/03/02/episode-II" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	}(document, 'script'));
+</script>
+<script>
+/*! A fix for the iOS orientationchange zoom bug.Script by @scottjehl, rebound by @wilto. MIT License.*/
+(function(j){var i=j.document;if(!i.querySelectorAll){return}var l=i.querySelectorAll("meta[name=viewport]")[0],a=l&&l.getAttribute("content"),h=a+", maximum-scale=1.0",d=a+", maximum-scale=10.0",g=true,c=j.orientation,k=0;if(!l){return}function f(){l.setAttribute("content",d);g=true}function b(){l.setAttribute("content",h);g=false}function e(m){c=Math.abs(j.orientation);k=Math.abs(m.gamma);if(k>8&&c===0){if(g){b()}}else{if(!g){f()}}}j.addEventListener("orientationchange",f,false);j.addEventListener("deviceorientation",e,false)})(this);
+</script>
+
+  
+
+
+
+</body>
+</html>
+
