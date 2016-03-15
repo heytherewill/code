@@ -4,13 +4,149 @@
  <title>William Barbosa</title>
  <link href="http://willsb.github.io/atom.xml" rel="self"/>
  <link href="http://willsb.github.io"/>
- <updated>2016-03-02T19:12:31-03:00</updated>
+ <updated>2016-03-14T22:38:12-03:00</updated>
  <id>http://willsb.github.io</id>
  <author>
    <name>William Barbosa</name>
    <email>william.sb@hotmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>MVV O que? - MVVM aplicado à Xamarin</title>
+   <link href="http://willsb.github.io/xamarin/2016/03/14/episode-III"/>
+   <updated>2016-03-14T00:00:00-03:00</updated>
+   <id>http://willsb.github.io/xamarin/2016/03/14/episode-III</id>
+   <content type="html">
+&lt;p&gt;&lt;img src=&quot;/assets/covers/mvvmwhat.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;episdio-iii---data-binding-em-mvvmcross-101&quot;&gt;Episódio III - Data Binding em MvvmCross 101&lt;/h3&gt;
+
+&lt;p&gt;Esse post é a continuação da série sobre MvvmCross em Xamarin. Você pode ler os episódios anteriores &lt;a href=&quot;/xamarin/2016/02/11/episode-I&quot;&gt;aqui&lt;/a&gt; e &lt;a href=&quot;/xamarin/2016/02/24/episode-II&quot;&gt;aqui&lt;/a&gt;. Também é recomendada a leitura do artigo Preparando uma PCL para Xamarin, episódios &lt;a href=&quot;/xamarin/2016/02/17/episode-I&quot;&gt;I&lt;/a&gt; e &lt;a href=&quot;&quot;&gt;II&lt;/a&gt;, onde eu explico sobre PCLs e o básico sobre assíncronia. Esse post tem como intuito ensinar um dos mecanismos mais importantes do padrão MVVM: Data Binding. Iremos ver como esse processo funciona de forma geral (na arquitetura MVVM) e como é a implementação de DataBinding do MvvmCross. Vamos lá?&lt;/p&gt;
+
+&lt;h3 id=&quot;data-binding&quot;&gt;Data Binding?&lt;/h3&gt;
+
+&lt;p&gt;Data Binding é o mecanismo que fornece ao padrão MVVM uma das suas maiores forças, que é a capacidade de unir a ViewModel e a View. De forma simplificada, Data Binding nada mais é do que atrelar propriedades de um objeto fonte (no nosso caso, uma ViewModel) à propriedades de outro objeto (no nosso caso, uma View) com o intuito de mante-las sempre em sincronia. Em outras palavras ao atualizar o valor de uma propriedade na nossa VM, o objeto fonte, esse valor será alterado também na nossa View, permitindo assim que alterações feitas na ViewModel sejam refletidas na interface da nossa aplicação!&lt;/p&gt;
+
+&lt;p&gt;Voltando um pouco no que já foi dito, lembre-se que o projeto &lt;code class=&quot;highlighter-rouge&quot;&gt;Core&lt;/code&gt; é reutilizado em todas as plataformas e nossas ViewModels estão nele. Com o poder do DataBinding, ao alterar o valor de uma propriedade da sua ViewModel, você consegue alterar valores da sua interface. Isso adiciona ainda mais possibilidades de reuso de código, tendo em vista que agora você pode controlar os valores que aparecem para o usuário em todas as plataformas que você pretende suportar em um único ponto.&lt;/p&gt;
+
+&lt;h3 id=&quot;e-como--que-isso-funciona&quot;&gt;E como é que isso funciona?&lt;/h3&gt;
+
+&lt;p&gt;Lembra quando eu disse no episódio I que o padrão MVVM foi criado pela Microsoft? Pois então, o .net framework possui algumas funcionalidades que facilitam a implementação do DataBinding, como a interface &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanged%28v=vs.110%29.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;INotifyPropertyChanged&lt;/code&gt;&lt;/a&gt; e o sistema de eventos. Uma classe que implementa &lt;code class=&quot;highlighter-rouge&quot;&gt;INotifyPropertyChanged&lt;/code&gt; (uma ViewModel) deve se preocupar em chamar o evento &lt;code class=&quot;highlighter-rouge&quot;&gt;PropertyChanged&lt;/code&gt; sempre que o valor de uma propriedade for alterado. Ao fazer isso, todos os objetos que assinaram esse evento (Views) serão notificados dessa alteração e poderão tomar uma ação (no caso, atualizar a interface do usuário).&lt;/p&gt;
+
+&lt;p&gt;Um exemplo de como a interface é implementada pode ser visto na classe &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/ViewModels/MvxNotifyPropertyChanged.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MvxNotifyPropertyChanged&lt;/code&gt;&lt;/a&gt;. O método &lt;code class=&quot;highlighter-rouge&quot;&gt;RaisePropertyChanged&lt;/code&gt; chama o evento &lt;code class=&quot;highlighter-rouge&quot;&gt;PropertyChanged&lt;/code&gt; indicando qual propriedade foi alterada. Do outro lado, o mecanismo de binding percebe a alteração e atualiza os valores que são exibidos na tela. Tudo isso acontece de forma transparente (lembre-se que a ViewModel nem sabe que a View existe) então você não precisa se preocupar com a View em momento algum. A única coisa que você precisa fazer é se certificar que as propriedades que representam valores exibidos na View sejam implementadas assim:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private string _name;
+public string Name
+{
+    get
+    {
+        return _name;
+    }
+    set
+    {
+        if (_name != value)
+        {
+            _name = value;
+            RaisePropertyChanged();
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Nesse exemplo, o método &lt;code class=&quot;highlighter-rouge&quot;&gt;RaisePropertyChanged()&lt;/code&gt; é chamado sem nenhum parametro pois ele faz uso do &lt;a href=&quot;https://msdn.microsoft.com/en-us/library/system.runtime.compilerservices.callermembernameattribute(v=vs.110).aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;CallerMemberNameAttribute&lt;/code&gt;&lt;/a&gt;, que faz com que o valor do parametro anotado seja o nome do método que o chamou (no exemplo, “Name”). Isso deixa o código mais limpo, evitando que você tenha que explicitamente criar uma string para cada propriedade da VM. Se contudo você precisa notificar a alteração de uma propriedade em outro lugar, você pode fazer isso passando diretamente o nome da propriedade como uma string ou usando uma expressão lambda que passe o nome da propriedade que precisa ser alterada, como no exemplo abaixo:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//O valor dessa propriedade é dependente do valor da propriedade &quot;IsLoggedIn&quot;, por isso ela possui apenas o get
+public string Message
+{
+    get
+    {
+        return IsLoggedIn ? &quot;Seja bem-vindo!&quot; : &quot;Faça login para prosseguir&quot;;
+    }
+}
+
+//Essa propriedade indica se o usuário fez login
+private string _isLoggedIn;
+public string IsLoggedIn
+{
+    get
+    {
+        return _isLoggedIn;
+    }
+    set
+    {
+        if (_isLoggedIn != value)
+        {
+            _isLoggedIn = value;
+            RaisePropertyChanged();
+            //Avisa a View que a propriedade Message foi alterada
+            RaisePropertyChanged(() =&amp;gt; Message);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Se você se sente incomodado com esse boilerplate, você não é o único. Para evitar a digitação desse monte de código, pode usar o &lt;a href=&quot;https://github.com/Fody/Fody&quot;&gt;Fody&lt;/a&gt;, que vai “tecer” as &lt;a href=&quot;https://github.com/Fody/PropertyChanged&quot;&gt;chamadas ao &lt;code class=&quot;highlighter-rouge&quot;&gt;RaisePropertyChanged&lt;/code&gt; na IL do seu código&lt;/a&gt; ou pode usar esse &lt;a href=&quot;/content/mvx.snippet&quot;&gt;template&lt;/a&gt; (tirado &lt;a href=&quot;http://stackoverflow.com/a/22110796/3465182&quot;&gt;desta resposta&lt;/a&gt;) no Visual Studio para que ele gere esse código base com o atalho &lt;code class=&quot;highlighter-rouge&quot;&gt;mvxprop&lt;/code&gt; + tab duas vezes. Importar o template no VS é muito simples e é deixado como um exercício para o leitor :)&lt;/p&gt;
+
+&lt;h3 id=&quot;como-declarar-os-bindings-usando-mvvmcross&quot;&gt;Como declarar os bindings usando MvvmCross?&lt;/h3&gt;
+
+&lt;p&gt;O processo de declaração dos bindings pode ser feito tanto nas linguagens de Markup (.axml no Android e .xaml nas plataformas Windows) quanto no codebehind de cada plataforma. A regra geral é sempre tentar fazer o máximo possível no Markup (afinal assim você deixa suas intenções muito mais claras e legíveis) e só usar o FluentBinding quando você precisar.&lt;/p&gt;
+
+&lt;p&gt;Para os que estão acostumados com XAML, o MvvmCross faz uso do mesmo modelo de binding, o que facilita muito para quem já usa MVVM mas nunca usou este framework. Não vou me aprofundar nesse tema pois já existe muito material pronto sobre isso na internet, então vou apenas deixar &lt;a href=&quot;https://blogs.msdn.microsoft.com/jerrynixon/2012/10/12/xaml-binding-basics-101/&quot;&gt;esse link&lt;/a&gt; que é um excelente material introdutório.&lt;/p&gt;
+
+&lt;p&gt;Já no Android, os bindings feitos no markup são simples porém muito expressivos. Primeiro você precisa declarar o namespace &lt;code class=&quot;highlighter-rouge&quot;&gt;local&lt;/code&gt; no nó pai do seu xml (&lt;code class=&quot;highlighter-rouge&quot;&gt;xmlns:local=&quot;http://schemas.android.com/apk/res-auto&quot;&lt;/code&gt;). Em seguida, você vai usar o atributo &lt;code class=&quot;highlighter-rouge&quot;&gt;MvxBind&lt;/code&gt; em cada uma das  Views onde você quer realizar o binding. O valor do atributo é uma string que segue o seguinte formato &lt;code class=&quot;highlighter-rouge&quot;&gt;PropriedadeDaView PropriedadeDaViewModel&lt;/code&gt;, sendo que caso você queira multiplas propriedades deve separar cada uma delas por vírgula. A sintaxe final fica assim:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:local=&quot;http://schemas.android.com/apk/res-auto&quot;
+    android:orientation=&quot;vertical&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;&amp;gt;
+
+    &amp;lt;TextView
+    	local:MvxBind=&quot;Text FirstName&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;/&amp;gt;
+
+    &amp;lt;Button
+    	local:MvxBind=&quot;Text WelcomeText; Click LoginCommand&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;/&amp;gt;
+
+&amp;lt;/LinearLayout&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Para quem é acostumado com xml de Android mas não conhece nada de MvvmCross, o trecho acima é bem simples de ser lido. Estou expressando que o texto da primeira TextView será igual ao valor da propriedade &lt;code class=&quot;highlighter-rouge&quot;&gt;FirstName&lt;/code&gt; da ViewModel¹. Limpo, claro e conciso. Sério, é só isso. Contanto que a view tenha uma propriedade com getter e setter, tudo que você precisa fazer é isso: Escrever o nome daquela propriedade e o nome da propriedade da VM e o motor do MvvmCross vai se virar para criar os bindings e manter aquele valor atualizado. Existem mais possibilidades para esse tipo de binding que iremos ver no próximo post!&lt;/p&gt;
+
+&lt;h3 id=&quot;e-quando-no-tem-como-fazer-no-xml&quot;&gt;E quando não tem como fazer no xml?&lt;/h3&gt;
+
+&lt;p&gt;Para o iOS, onde o binding no Markup não está disponível, e para alguns casos onde não tem como você fazer o binding diretamente no xml, devemos usar o chamado FluentBinding para criar as relações entre View e ViewModel. O processo é bem simples. Você primeiro cria um &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Binding/BindingContext/MvxFluentBindingDescriptionSet.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MvxFluentBindingDescriptionSet&lt;/code&gt;&lt;/a&gt; usando o método de extensão &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Binding/BindingContext/MvxBindingContextOwnerExtensions.Fluent.cs#L12-L17&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;CreateBindingSet&lt;/code&gt;&lt;/a&gt;. Uma vez criado, você deve usar os métodos da interface da seguinte forma:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var set = this.CreateBindingSet&amp;lt;MyView, MyViewModel&amp;gt;();
+set
+.Bind(editText) //View que será usada no binding
+.For(v =&amp;gt; v.Text) // expressão lambda (ou string) que indica qual propriedade da View será usada no binding
+.To(vm =&amp;gt; vm.FirstName); //expressão lambda (ou string) que indica qual propriedade da ViewModel será usada no binding
+
+//Similar ao acima, mas em uma linha :)
+set.Bind(button).For(v =&amp;gt; v.Text).To(vm =&amp;gt; vm.WelcomeText);
+
+//Se esquecer de chamar o Apply, nada acontecerá!
+set.Apply()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Como você pode ver, existem alguns problemas no FluentBinding que não existem no binding de texto. Um deles é a sintaxe, que é fácil de esquecer/confundir. Outro é a quantidade de código que você precisa. Não é muito, mas se você pode descrever a mesma coisa usando menos no xml, não tem motivo para não faze-lo. Tirando esses pequenos problemas (que só existem se você estiver comparando com a alternativa que é usar o binding de texto), usar a sintaxe fluente não é nada de outro planeta, portanto não se sinta intimidado!&lt;/p&gt;
+
+&lt;h3 id=&quot;esse-post-foi-grande-hein&quot;&gt;Esse post foi grande, hein?&lt;/h3&gt;
+
+&lt;p&gt;Sim, bem maior que o de costume. E eu ainda nem esgotei o assunto! Portanto leia tudo, dê um tempo para que seu cérebro absorva o conteúdo e depois leia novamente para fixação! Nos próximos posts vamos continuar falando de DataBinding, mas desta vez iremos tratar de bindings customizados (para necessidade mais específicas), Commands (usados para bindar ações ao invés de valores) e ValueConverters (que transformam o valor antes de exibi-lo). Portanto fique ligado porque vem muita coisa legal pela frente :)&lt;/p&gt;
+
+&lt;p&gt;¹ - O MvvmCross localiza as ViewModels com base no nome da View, portanto se você criar a &lt;code class=&quot;highlighter-rouge&quot;&gt;FirstView&lt;/code&gt;, ele vai saber que o contexto dos bindings daquela View deve ser uma instância da classe &lt;code class=&quot;highlighter-rouge&quot;&gt;FirstViewModel&lt;/code&gt;. Esse comportamento pode ser alterado implementando o tipo &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/ViewModels/IMvxNameMapping.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxNameMapping&lt;/code&gt;&lt;/a&gt; e alterando o retorno padrão do método &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/Platform/MvxSetup.cs#L283&quot;&gt;CreateViewToViewModelNaming&lt;/a&gt;.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>await willsb.PreparePCLAsync();</title>
