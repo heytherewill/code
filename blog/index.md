@@ -8,6 +8,7 @@ description: ""
 <ul class="index-page">
 {% for post in site.posts  %}
 
+    {% if post.series != "index" %}
 	{% assign parts = post.content | split: '</h3>' %}
 
 	{% assign preview = parts[1] | strip_html | truncatewords: 60 %}
@@ -22,6 +23,7 @@ description: ""
 
 		<h6> Publicado em {{ post.date | date: "%d/%m/%Y" }} </h6>
 	</li>
+    {% endif %}
 
 {% endfor %}
 

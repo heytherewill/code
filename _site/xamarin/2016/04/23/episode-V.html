@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>MVV O que? - MVVM aplicado à Xamarin</title>
+	<meta name="author" content="William Barbosa">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" media="all">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.eot" rel="stylesheet" media="all">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='/assets/themes//css/style.css' rel="stylesheet" media="all">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="MVV O que? - MVVM aplicado à Xamarin" type="application/atom+xml">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="hentry">
+	<header class="the-header">
+		<div class="unit-head">
+			<div class="unit-inner unit-head-inner">
+				<a class="title" href="/blog">William Barbosa</a>
+					<ul>
+						<li class="icon email">
+							<a href="mailto:william.sb@hotmail.com" rel="me">
+								<i class="fi-mail"></i>
+							</a>
+						</li>
+						<li class="icon github">
+							<a href="http://github.com/willsb/" rel="me">
+								<i class="fi-social-github"></i>
+							</a>
+						</li>
+						<li class="icon facebook">
+							<a href="http://fb.com/Willkuns/" rel="me">
+								<i class="fi-social-facebook"></i>
+							</a>
+						</li>
+						<li class="icon twitter">
+							<a class="fi-social-twitter" href="http://twitter.com/willdotnet/" rel="me">
+								<i ></i>
+							</a>
+						</li>
+					</ul>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					
+<article class="unit-article layout-post">
+	<div class="unit-inner unit-article-inner">
+		<div class="content">
+			<header>
+				<div class="unit-head">
+					<div class="unit-inner unit-head-inner">
+						<h1 class="h2 entry-title">MVV O que? - MVVM aplicado à Xamarin</h1>
+						<h6 class="publish-date"> Publicado em 23/04/2016 </h6>
+					</div><!-- unit-inner -->
+				</div><!-- unit-head -->
+			</header>
+
+			<div class="bd">
+				<div class="entry-content">
+					
+<p><img src="/assets/covers/mvvmwhat.png" alt="Cover" /></p>
+
+<h3 id="episdio-v---navegao-usando-mvvmcross">Episódio V - Navegação usando MvvmCross</h3>
+
+<p>Esse post é a continuação da série sobre MvvmCross em Xamarin. Você pode ler os episódios anteriores <a href="/xamarin/2016/02/10/index">aqui</a>. Também é recomendada a leitura do artigo Preparando uma PCL para Xamarin, que pode ser encontrado <a href="/xamarin/2016/02/16/index">aqui</a>, onde eu explico sobre PCLs e o básico sobre assíncronia. No post de hoje iremos explicar o modelo de navegação do MvvmCross e entender um pouco como implementar modelos de navegação diferentes do que vem “de fábrica”. Vamos lá?</p>
+
+<h3 id="como-a-navegao-acontece">Como a navegação acontece?</h3>
+
+<p><a href="/xamarin/2016/02/24/episode-II#navegao-presenter-h">Eu mencionei no episódio II</a>, ainda que superficialmente, como funciona a exibição de telas no MvvmCross. Cada ViewModel representa uma abstração e a View é como aquele VM deve ser exibida na tela. Como nem tudo do seu app acontece na mesma tela, é necessário controlar a ordem de exibição das telas (no nosso caso, ViewModels) de forma que elas apareçam em uma determinada ordem. Para tanto, o framework MvvmCross faz uso do método <a href="https://github.com/MvvmCross/MvvmCross/blob/b2fc5c108a9fc928aafb62081088e552834b980e/MvvmCross/Core/Core/ViewModels/MvxNavigatingObject.cs#L122-L135"><code class="highlighter-rouge">ShowViewModel&lt;TViewModel&gt;</code></a>, método localizado na classe <code class="highlighter-rouge">MvxNavigatingObject</code>. Ainda nesse post eu irei explicar o que são os parâmetros que esse método pode receber, mas por hora vamos entender o que acontece depois que o método é chamado.</p>
+
+<p>Primeiro precisamos entender que as VMs ficam na área compartilhada do código. Isso quer dizer que elas são independentes de código específico de plataforma. Basta estudar as plataformas mobile por algumas horas para perceber que os modelos de navegação são muito diferentes, afinal as apis expostas e as abordagens de gestão de memórias não são as mesmas. Isso quer dizer que por si só o código de PCL não será capaz de controlar a navegação. Para contornar isso, o MvvmCross faz uso de injeção de dependencia, um conceito que eu explicarei em detalhes no próximo artigo.</p>
+
+<p>Sendo assim, são necessários 3 métodos <code class="highlighter-rouge">ShowViewModel</code> para sair da ViewModel e chegar na UI. O primeiro é o da classe <code class="highlighter-rouge">MvxNavigatingObject</code>, que é chamado pelas nossas VMs. O segundo é o da interface <a href="https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/Views/IMvxViewDispatcher.cs"><code class="highlighter-rouge">IMvxViewDispatcher</code></a>. A responsabilidade dessa interface é assegurar que uma outra interface, a <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Core/Core/Views/IMvxViewPresenter.cs"><code class="highlighter-rouge">IMvxViewPresenter</code></a>, será chamada e que isso acontecerá no Thread de UI (por isso que a interface <code class="highlighter-rouge">IMvxViewDispatcher</code> também implementa a interface <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Platform/Platform/Core/IMvxMainThreadDispatcher.cs"><code class="highlighter-rouge">IMvxMainThreadDispatcher</code></a>). Como já disse, o terceiro método é o método <code class="highlighter-rouge">Show</code> da interface <code class="highlighter-rouge">IMvxViewPresenter</code>, responsável por efetivamente carregar a View.</p>
+
+<h3 id="e-eu-preciso-implementar-tudo-isso">E eu preciso implementar tudo isso?!</h3>
+
+<p>Não mesmo! Enquanto é muito importante entender como tudo isso funciona por baixo dos panos para ser capaz de escrever o seu código de forma mais eficaz, em aplicações simples é provável que você não precise implementar a interface <code class="highlighter-rouge">IMvxViewPresenter</code> (e mesmo em aplicações mais complexas você provavelmente não vai precisar implementar um <code class="highlighter-rouge">IMvxViewDispatcher</code>). Isso acontece porque o MvvmCross já tem essas interfaces implementadas para os casos mais comuns. Basta <a href="https://github.com/MvvmCross/MvvmCross/search">buscar no código fonte do MvvmCross</a> por Mvx<strong>Nome da plataforma</strong>ViewDispatcher para ver como é implementado o Dispatcher de cada uma das plataformas. Abaixo estão os links diretos para os dispatchers e os presenters. É interessante que você dê uma olhada no códigos fonte da plataforma que você tem mais familiaridade antes de prosseguir a leitura.</p>
+
+<ul>
+  <li>Android - <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Droid/Droid/Views/MvxAndroidViewDispatcher.cs">Dispatcher</a> // <a href="https://github.com/MvvmCross/MvvmCross/tree/4.0/MvvmCross/Droid/Shared/Presenter">Presenters</a></li>
+  <li>Console - <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Console/Console/Views/MvxConsoleViewDispatcher.cs">Dispatcher</a> // <a href="https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Console/Console/Views">Presenters</a></li>
+  <li>iOS - <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/iOS/iOS/Views/MvxIosViewDispatcher.cs">Dispatcher</a> // <a href="https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/iOS/iOS/Views/Presenters">Presenters</a></li>
+  <li>Mac - <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Mac/Mac/Views/MvxMacViewDispatcher.cs">Dispatcher</a> // <a href="https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Mac/Mac/Views/Presenters">Presenters</a></li>
+  <li>UWP - <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsUWP/Views/MvxWindowsViewDispatcher.cs">Dispatcher</a> // <a href="https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsUWP/Views">Presenters</a></li>
+  <li>Windows Phone - <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsPhone/Views/MvxPhoneViewDispatcher.cs">Dispatcher</a> // <a href="https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsPhone/Views">Presenters</a></li>
+  <li>Windows Store - <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsStore/Views/MvxStoreViewDispatcher.cs">Dispatcher</a> // <a href="https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsStore/Views">Presenters</a></li>
+  <li>WPF - <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/Wpf/Views/MvxWpfViewDispatcher.cs">Dispatcher</a> // <a href="https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/Wpf/Views">Presenters</a></li>
+</ul>
+
+<p>Ao olhar os dispatchers e os presenters você deve ter notado que enquanto os Dispatchers são todos muito similares (fazem o Marshal para o UI thread e encaminham a requisição para o presenter) os presenters geralmente são mais complexos, tendo cada plataforma a sua interface própria e, em certos casos, até mais de um presenter predefinido. Isso ocorre por dois motivos.  Primeiro porque as necessidades de exibição de ViewModel variam bastante entre cada plataforma suportada pelo MvvmCross. O segundo motivo é que apps diferentes tem necessidades complemente diferentes de exibição de conteúdo.</p>
+
+<p>Um app como o Snapchat exibe o seu conteúdo de uma forma completamente diferente do WhatsApp, por exemplo. Não tem como esperar que uma solução de exibição de ViewModels funcione para ambos da mesma maneira. Claro que o exemplo foi extremo, mas não precisamos ir tão longe: Se você quiser implementar conceitos que são relativamente comuns como o de <a href="https://www.google.com/design/spec/components/bottom-navigation.html">Bottom Navigation</a> ou <a href="https://www.google.com/design/spec/patterns/navigation-drawer.html">Navigation Drawer</a>, você precisa de um presenter com algumas alterações, já que os presenters padrão tratam ViewModels como páginas e esse nem sempre é o caso.</p>
+
+<h3 id="uma-viewmodel-no--pgina-como-assim">Uma ViewModel não é página? Como assim?!</h3>
+
+<p>Vou esperar você tomar uma água e se recuperar do choque. Não, uma ViewModel não representa uma página. Como dividir o app em páginas é o jeito mais comum de se desenvolver apps, geralmente essa abordagem de 1 página = 1 VM basta. Esse não é o caso sempre. Se você tem componentes que aparecem em mais de uma página (como no exemplo acima, um Navigation Drawer) faz sentido que esse componente seja representado por uma ViewModel e que o seu presenter o trate um pouco diferente.</p>
+
+<p>Usarei como exemplo a plataforma Android. Uma abordagem para implementar o Navigation Drawer seria criar um presenter que extende o <a href="https://github.com/MvvmCross/MvvmCross/blob/c6b3976e3025464005adb97df258c959a106d74a/MvvmCross/Droid/Shared/Presenter/MvxFragmentsPresenter.cs"><code class="highlighter-rouge">MvxFragmentsPresenter</code></a> e trata a VM que representa o Drawer de forma diferente. Já que o presenter do Android tem acesso à Activity que está sendo atualmente exibida, basta verificar o tipo da VM antes de exibir. Se for o tipo que precisa ser tratado de forma diferente, faça o que deve ser feito, caso contrário apenas chame o método base.</p>
+
+<p>Quando você começa a pensar que uma ViewModel é na verdade uma abstração de um pedaço da tela, fica bem mais fácil de entender esses conceitos. A ViewModel representa um pedaço da tela; o que acontece é que na maior parte das vezes esse pedaço ocupa a tela toda.</p>
+
+<h3 id="s-tem-isso-de-possibilidade-de-customizao">Só tem isso de possibilidade de customização?</h3>
+
+<p>Negativo, caro leitor. Te lembra dos parâmetros adicionais do método <code class="highlighter-rouge">ShowViewModel</code>? Pois bem, você pode trata-los no seu presenter com o intuito de moldar a navegação de acordo com as necessidades do seu app. Os dois primeiros, parameterBundle e presentationBundle, são utilizados para passar informação para o seu presenter. O primeiro, obviamente, passa parâmetros e o segundo passa informações sobre a forma como os dados deverão ser apresentados. Um exemplo super prático disso pode ser visto <a href="http://gregshackles.com/presenters-in-mvvmcross-manipulating-the-back-stack/">nesse excelente artigo do Greg Shackles</a> onde ele usa os bundles para sinalizar que a backstack deve ser esvaziada. O outro parâmetro é do tipo <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Core/Core/ViewModels/MvxRequestedBy.cs"><code class="highlighter-rouge">MvxRequestedBy</code></a> e serve para que o presenter tenha ciência de quem foi o ViewModel que solicitou a exibição. Isso pode ser útil para definir se a ViewModel que está sendo exibida deve entrar na backstack ou não, por exemplo.</p>
+
+<p>Além desses parâmetros, nós podemos ainda explorar o método <a href="https://github.com/MvvmCross/MvvmCross/blob/b2fc5c108a9fc928aafb62081088e552834b980e/MvvmCross/Core/Core/ViewModels/MvxNavigatingObject.cs#L27-L35"><code class="highlighter-rouge">ChangePresentation</code></a>. Esse método serve para quando nós queremos sinalizar para o presenter que algo deve ser feito com a ViewModel atual. Esse método faz uso da classe <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Core/Core/ViewModels/MvxPresentationHint.cs"><code class="highlighter-rouge">MvxPresentationHint</code></a>, que permite que informações sejam enviadas para o presenter a qualquer momento. Um exemplo disso, que inclusive já é implementado por padrão no framework, é o método <a href="https://github.com/MvvmCross/MvvmCross/blob/b2fc5c108a9fc928aafb62081088e552834b980e/MvvmCross/Core/Core/ViewModels/MvxNavigatingObject.cs#L22-L25"><code class="highlighter-rouge">Close</code></a>. Esse invoca o método <code class="highlighter-rouge">ChangePresentation</code> passando uma <a href="https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Core/Core/ViewModels/MvxClosePresentationHint.cs"><code class="highlighter-rouge">MvxClosePresentationHint</code></a>. Essa hint é por padrão tratada em todas as plataformas para encerrar a ViewModel atual, mostrando que apesar de simples esse padrão é extremamente eficaz e oferece um poder de customização enorme à plataforma.</p>
+
+<h3 id="isso-tem-uso-na-vida-real">Isso tem uso na vida real?</h3>
+
+<p>Com certeza! Apesar de tudo isso parecer algo abstrato e de outro mundo, quando você precisar de um custom presenter tudo fará sentido na sua cabela. Acredite, saber oque está nesse artigo é importante para quem quer fazer uma aplicação que vai além do feijão com arroz. No próximo artigo eu irei falar sobre injeção de dependencias, um tema crucial para quem quer fazer apps com MvvmCross. Espero que tenham gostado e até a próxima :)</p>
+
+					<div class="meta">
+						<ul class="list-category list-linear">
+							<li class="list-head">category:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/categories#xamarin-ref">
+    		xamarin <span>9</span>
+    	</a></li>
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/tags#mvvm-ref">mvvm <span>6</span></a></li>
+     
+    	<li><a href="/blog/tags#xamarin-ref">xamarin <span>9</span></a></li>
+     
+    	<li><a href="/blog/tags#mvvmcross-ref">mvvmcross <span>6</span></a></li>
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="willdotnet" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/willdotnet" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/xamarin/2016/04/03/episode-IV" title="View Episódio IV - Data Binding em MvvmCross 102">&laquo; Episódio IV - Data Binding em MvvmCross 102</a></li>
+							
+							
+							
+						</ul>
+					</nav>
+				</div>
+			</footer>
+					
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+				</div><!-- misc-content -->
+				
+			</div><!-- bd -->
+
+		</div><!-- content -->
+	</div><!-- unit-inner -->
+</article>
+
+
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
+</div><!-- page -->
+<script>
+	(function(d, s) {
+		var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.src = url; js.id = id;
+		fjs.parentNode.insertBefore(js, fjs);
+		};
+	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/xamarin/2016/04/23/episode-V" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	}(document, 'script'));
+</script>
+<script>
+/*! A fix for the iOS orientationchange zoom bug.Script by @scottjehl, rebound by @wilto. MIT License.*/
+(function(j){var i=j.document;if(!i.querySelectorAll){return}var l=i.querySelectorAll("meta[name=viewport]")[0],a=l&&l.getAttribute("content"),h=a+", maximum-scale=1.0",d=a+", maximum-scale=10.0",g=true,c=j.orientation,k=0;if(!l){return}function f(){l.setAttribute("content",d);g=true}function b(){l.setAttribute("content",h);g=false}function e(m){c=Math.abs(j.orientation);k=Math.abs(m.gamma);if(k>8&&c===0){if(g){b()}}else{if(!g){f()}}}j.addEventListener("orientationchange",f,false);j.addEventListener("deviceorientation",e,false)})(this);
+</script>
+
+  
+
+
+
+</body>
+</html>
+

@@ -3,6 +3,7 @@ layout: post
 title: "MVV O que? - MVVM aplicado à Xamarin"
 category: "xamarin"
 tagline: "Episódio II - A estrutura de um app MvvmCross"
+series: "mvvm-what"
 tags : [mvvm, xamarin, mvvmcross]
 ---
 {% include JB/setup %}

@@ -5,10 +5,69 @@
         <description>William Barbosa - William Barbosa</description>
         <link>http://willsb.github.io</link>
         <atom:link href="http://willsb.github.io/rss.xml" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Mon, 04 Apr 2016 00:08:30 -0300</lastBuildDate>
-        <pubDate>Mon, 04 Apr 2016 00:08:30 -0300</pubDate>
+        <lastBuildDate>Sat, 23 Apr 2016 10:45:27 -0300</lastBuildDate>
+        <pubDate>Sat, 23 Apr 2016 10:45:27 -0300</pubDate>
         <ttl>60</ttl>
 
+
+        <item>
+                <title>MVV O que? - MVVM aplicado à Xamarin</title>
+                <description>
+&lt;p&gt;&lt;img src=&quot;/assets/covers/mvvmwhat.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;episdio-v---navegao-usando-mvvmcross&quot;&gt;Episódio V - Navegação usando MvvmCross&lt;/h3&gt;
+
+&lt;p&gt;Esse post é a continuação da série sobre MvvmCross em Xamarin. Você pode ler os episódios anteriores &lt;a href=&quot;/xamarin/2016/02/10/index&quot;&gt;aqui&lt;/a&gt;. Também é recomendada a leitura do artigo Preparando uma PCL para Xamarin, que pode ser encontrado &lt;a href=&quot;/xamarin/2016/02/16/index&quot;&gt;aqui&lt;/a&gt;, onde eu explico sobre PCLs e o básico sobre assíncronia. No post de hoje iremos explicar o modelo de navegação do MvvmCross e entender um pouco como implementar modelos de navegação diferentes do que vem “de fábrica”. Vamos lá?&lt;/p&gt;
+
+&lt;h3 id=&quot;como-a-navegao-acontece&quot;&gt;Como a navegação acontece?&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;/xamarin/2016/02/24/episode-II#navegao-presenter-h&quot;&gt;Eu mencionei no episódio II&lt;/a&gt;, ainda que superficialmente, como funciona a exibição de telas no MvvmCross. Cada ViewModel representa uma abstração e a View é como aquele VM deve ser exibida na tela. Como nem tudo do seu app acontece na mesma tela, é necessário controlar a ordem de exibição das telas (no nosso caso, ViewModels) de forma que elas apareçam em uma determinada ordem. Para tanto, o framework MvvmCross faz uso do método &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/b2fc5c108a9fc928aafb62081088e552834b980e/MvvmCross/Core/Core/ViewModels/MvxNavigatingObject.cs#L122-L135&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ShowViewModel&amp;lt;TViewModel&amp;gt;&lt;/code&gt;&lt;/a&gt;, método localizado na classe &lt;code class=&quot;highlighter-rouge&quot;&gt;MvxNavigatingObject&lt;/code&gt;. Ainda nesse post eu irei explicar o que são os parâmetros que esse método pode receber, mas por hora vamos entender o que acontece depois que o método é chamado.&lt;/p&gt;
+
+&lt;p&gt;Primeiro precisamos entender que as VMs ficam na área compartilhada do código. Isso quer dizer que elas são independentes de código específico de plataforma. Basta estudar as plataformas mobile por algumas horas para perceber que os modelos de navegação são muito diferentes, afinal as apis expostas e as abordagens de gestão de memórias não são as mesmas. Isso quer dizer que por si só o código de PCL não será capaz de controlar a navegação. Para contornar isso, o MvvmCross faz uso de injeção de dependencia, um conceito que eu explicarei em detalhes no próximo artigo.&lt;/p&gt;
+
+&lt;p&gt;Sendo assim, são necessários 3 métodos &lt;code class=&quot;highlighter-rouge&quot;&gt;ShowViewModel&lt;/code&gt; para sair da ViewModel e chegar na UI. O primeiro é o da classe &lt;code class=&quot;highlighter-rouge&quot;&gt;MvxNavigatingObject&lt;/code&gt;, que é chamado pelas nossas VMs. O segundo é o da interface &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/MvvmCross/Core/Core/Views/IMvxViewDispatcher.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxViewDispatcher&lt;/code&gt;&lt;/a&gt;. A responsabilidade dessa interface é assegurar que uma outra interface, a &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Core/Core/Views/IMvxViewPresenter.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxViewPresenter&lt;/code&gt;&lt;/a&gt;, será chamada e que isso acontecerá no Thread de UI (por isso que a interface &lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxViewDispatcher&lt;/code&gt; também implementa a interface &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Platform/Platform/Core/IMvxMainThreadDispatcher.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxMainThreadDispatcher&lt;/code&gt;&lt;/a&gt;). Como já disse, o terceiro método é o método &lt;code class=&quot;highlighter-rouge&quot;&gt;Show&lt;/code&gt; da interface &lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxViewPresenter&lt;/code&gt;, responsável por efetivamente carregar a View.&lt;/p&gt;
+
+&lt;h3 id=&quot;e-eu-preciso-implementar-tudo-isso&quot;&gt;E eu preciso implementar tudo isso?!&lt;/h3&gt;
+
+&lt;p&gt;Não mesmo! Enquanto é muito importante entender como tudo isso funciona por baixo dos panos para ser capaz de escrever o seu código de forma mais eficaz, em aplicações simples é provável que você não precise implementar a interface &lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxViewPresenter&lt;/code&gt; (e mesmo em aplicações mais complexas você provavelmente não vai precisar implementar um &lt;code class=&quot;highlighter-rouge&quot;&gt;IMvxViewDispatcher&lt;/code&gt;). Isso acontece porque o MvvmCross já tem essas interfaces implementadas para os casos mais comuns. Basta &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/search&quot;&gt;buscar no código fonte do MvvmCross&lt;/a&gt; por Mvx&lt;strong&gt;Nome da plataforma&lt;/strong&gt;ViewDispatcher para ver como é implementado o Dispatcher de cada uma das plataformas. Abaixo estão os links diretos para os dispatchers e os presenters. É interessante que você dê uma olhada no códigos fonte da plataforma que você tem mais familiaridade antes de prosseguir a leitura.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Android - &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Droid/Droid/Views/MvxAndroidViewDispatcher.cs&quot;&gt;Dispatcher&lt;/a&gt; // &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/tree/4.0/MvvmCross/Droid/Shared/Presenter&quot;&gt;Presenters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Console - &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Console/Console/Views/MvxConsoleViewDispatcher.cs&quot;&gt;Dispatcher&lt;/a&gt; // &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Console/Console/Views&quot;&gt;Presenters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;iOS - &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/iOS/iOS/Views/MvxIosViewDispatcher.cs&quot;&gt;Dispatcher&lt;/a&gt; // &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/iOS/iOS/Views/Presenters&quot;&gt;Presenters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Mac - &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Mac/Mac/Views/MvxMacViewDispatcher.cs&quot;&gt;Dispatcher&lt;/a&gt; // &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Mac/Mac/Views/Presenters&quot;&gt;Presenters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;UWP - &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsUWP/Views/MvxWindowsViewDispatcher.cs&quot;&gt;Dispatcher&lt;/a&gt; // &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsUWP/Views&quot;&gt;Presenters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Windows Phone - &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsPhone/Views/MvxPhoneViewDispatcher.cs&quot;&gt;Dispatcher&lt;/a&gt; // &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsPhone/Views&quot;&gt;Presenters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Windows Store - &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsStore/Views/MvxStoreViewDispatcher.cs&quot;&gt;Dispatcher&lt;/a&gt; // &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/WindowsStore/Views&quot;&gt;Presenters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;WPF - &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/Wpf/Views/MvxWpfViewDispatcher.cs&quot;&gt;Dispatcher&lt;/a&gt; // &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/tree/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Windows/Wpf/Views&quot;&gt;Presenters&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ao olhar os dispatchers e os presenters você deve ter notado que enquanto os Dispatchers são todos muito similares (fazem o Marshal para o UI thread e encaminham a requisição para o presenter) os presenters geralmente são mais complexos, tendo cada plataforma a sua interface própria e, em certos casos, até mais de um presenter predefinido. Isso ocorre por dois motivos.  Primeiro porque as necessidades de exibição de ViewModel variam bastante entre cada plataforma suportada pelo MvvmCross. O segundo motivo é que apps diferentes tem necessidades complemente diferentes de exibição de conteúdo.&lt;/p&gt;
+
+&lt;p&gt;Um app como o Snapchat exibe o seu conteúdo de uma forma completamente diferente do WhatsApp, por exemplo. Não tem como esperar que uma solução de exibição de ViewModels funcione para ambos da mesma maneira. Claro que o exemplo foi extremo, mas não precisamos ir tão longe: Se você quiser implementar conceitos que são relativamente comuns como o de &lt;a href=&quot;https://www.google.com/design/spec/components/bottom-navigation.html&quot;&gt;Bottom Navigation&lt;/a&gt; ou &lt;a href=&quot;https://www.google.com/design/spec/patterns/navigation-drawer.html&quot;&gt;Navigation Drawer&lt;/a&gt;, você precisa de um presenter com algumas alterações, já que os presenters padrão tratam ViewModels como páginas e esse nem sempre é o caso.&lt;/p&gt;
+
+&lt;h3 id=&quot;uma-viewmodel-no--pgina-como-assim&quot;&gt;Uma ViewModel não é página? Como assim?!&lt;/h3&gt;
+
+&lt;p&gt;Vou esperar você tomar uma água e se recuperar do choque. Não, uma ViewModel não representa uma página. Como dividir o app em páginas é o jeito mais comum de se desenvolver apps, geralmente essa abordagem de 1 página = 1 VM basta. Esse não é o caso sempre. Se você tem componentes que aparecem em mais de uma página (como no exemplo acima, um Navigation Drawer) faz sentido que esse componente seja representado por uma ViewModel e que o seu presenter o trate um pouco diferente.&lt;/p&gt;
+
+&lt;p&gt;Usarei como exemplo a plataforma Android. Uma abordagem para implementar o Navigation Drawer seria criar um presenter que extende o &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/c6b3976e3025464005adb97df258c959a106d74a/MvvmCross/Droid/Shared/Presenter/MvxFragmentsPresenter.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MvxFragmentsPresenter&lt;/code&gt;&lt;/a&gt; e trata a VM que representa o Drawer de forma diferente. Já que o presenter do Android tem acesso à Activity que está sendo atualmente exibida, basta verificar o tipo da VM antes de exibir. Se for o tipo que precisa ser tratado de forma diferente, faça o que deve ser feito, caso contrário apenas chame o método base.&lt;/p&gt;
+
+&lt;p&gt;Quando você começa a pensar que uma ViewModel é na verdade uma abstração de um pedaço da tela, fica bem mais fácil de entender esses conceitos. A ViewModel representa um pedaço da tela; o que acontece é que na maior parte das vezes esse pedaço ocupa a tela toda.&lt;/p&gt;
+
+&lt;h3 id=&quot;s-tem-isso-de-possibilidade-de-customizao&quot;&gt;Só tem isso de possibilidade de customização?&lt;/h3&gt;
+
+&lt;p&gt;Negativo, caro leitor. Te lembra dos parâmetros adicionais do método &lt;code class=&quot;highlighter-rouge&quot;&gt;ShowViewModel&lt;/code&gt;? Pois bem, você pode trata-los no seu presenter com o intuito de moldar a navegação de acordo com as necessidades do seu app. Os dois primeiros, parameterBundle e presentationBundle, são utilizados para passar informação para o seu presenter. O primeiro, obviamente, passa parâmetros e o segundo passa informações sobre a forma como os dados deverão ser apresentados. Um exemplo super prático disso pode ser visto &lt;a href=&quot;http://gregshackles.com/presenters-in-mvvmcross-manipulating-the-back-stack/&quot;&gt;nesse excelente artigo do Greg Shackles&lt;/a&gt; onde ele usa os bundles para sinalizar que a backstack deve ser esvaziada. O outro parâmetro é do tipo &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Core/Core/ViewModels/MvxRequestedBy.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MvxRequestedBy&lt;/code&gt;&lt;/a&gt; e serve para que o presenter tenha ciência de quem foi o ViewModel que solicitou a exibição. Isso pode ser útil para definir se a ViewModel que está sendo exibida deve entrar na backstack ou não, por exemplo.&lt;/p&gt;
+
+&lt;p&gt;Além desses parâmetros, nós podemos ainda explorar o método &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/b2fc5c108a9fc928aafb62081088e552834b980e/MvvmCross/Core/Core/ViewModels/MvxNavigatingObject.cs#L27-L35&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ChangePresentation&lt;/code&gt;&lt;/a&gt;. Esse método serve para quando nós queremos sinalizar para o presenter que algo deve ser feito com a ViewModel atual. Esse método faz uso da classe &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Core/Core/ViewModels/MvxPresentationHint.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MvxPresentationHint&lt;/code&gt;&lt;/a&gt;, que permite que informações sejam enviadas para o presenter a qualquer momento. Um exemplo disso, que inclusive já é implementado por padrão no framework, é o método &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/b2fc5c108a9fc928aafb62081088e552834b980e/MvvmCross/Core/Core/ViewModels/MvxNavigatingObject.cs#L22-L25&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Close&lt;/code&gt;&lt;/a&gt;. Esse invoca o método &lt;code class=&quot;highlighter-rouge&quot;&gt;ChangePresentation&lt;/code&gt; passando uma &lt;a href=&quot;https://github.com/MvvmCross/MvvmCross/blob/3c735adc534a5df2d4730e9d58a08f7863c30cee/MvvmCross/Core/Core/ViewModels/MvxClosePresentationHint.cs&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MvxClosePresentationHint&lt;/code&gt;&lt;/a&gt;. Essa hint é por padrão tratada em todas as plataformas para encerrar a ViewModel atual, mostrando que apesar de simples esse padrão é extremamente eficaz e oferece um poder de customização enorme à plataforma.&lt;/p&gt;
+
+&lt;h3 id=&quot;isso-tem-uso-na-vida-real&quot;&gt;Isso tem uso na vida real?&lt;/h3&gt;
+
+&lt;p&gt;Com certeza! Apesar de tudo isso parecer algo abstrato e de outro mundo, quando você precisar de um custom presenter tudo fará sentido na sua cabela. Acredite, saber oque está nesse artigo é importante para quem quer fazer uma aplicação que vai além do feijão com arroz. No próximo artigo eu irei falar sobre injeção de dependencias, um tema crucial para quem quer fazer apps com MvvmCross. Espero que tenham gostado e até a próxima :)&lt;/p&gt;
+</description>
+                <link>http://willsb.github.io/xamarin/2016/04/23/episode-V</link>
+                <guid>http://willsb.github.io/xamarin/2016/04/23/episode-V</guid>
+                <pubDate>Sat, 23 Apr 2016 00:00:00 -0300</pubDate>
+        </item>
 
         <item>
                 <title>MVV O que? - MVVM aplicado à Xamarin</title>
@@ -375,6 +434,21 @@ set.Apply()
         </item>
 
         <item>
+                <title>await willsb.PreparePCLAsync();</title>
+                <description>
+&lt;p&gt;Esse post é um indexador para a série “await willsb.PreparePCLAsync();”.&lt;/p&gt;
+
+&lt;h3 id=&quot;episdio-i---preparando-uma-pcl-para-xamarinxamarin20160217episode-i&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/17/episode-I&quot;&gt;Episódio I - Preparando uma PCL para Xamarin&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h3 id=&quot;episdio-ii---a-importncia-de-usar-asyncxamarin20160302episode-ii&quot;&gt;&lt;a href=&quot;/xamarin/2016/03/02/episode-II&quot;&gt;Episódio II - A importância de usar async&lt;/a&gt;&lt;/h3&gt;
+
+</description>
+                <link>http://willsb.github.io/xamarin/2016/02/16/index</link>
+                <guid>http://willsb.github.io/xamarin/2016/02/16/index</guid>
+                <pubDate>Tue, 16 Feb 2016 00:00:00 -0200</pubDate>
+        </item>
+
+        <item>
                 <title>MVV O que? - MVVM aplicado à Xamarin</title>
                 <description>
 &lt;p&gt;&lt;img src=&quot;/assets/covers/mvvmwhat.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
@@ -416,6 +490,27 @@ set.Apply()
                 <link>http://willsb.github.io/xamarin/2016/02/11/episode-I</link>
                 <guid>http://willsb.github.io/xamarin/2016/02/11/episode-I</guid>
                 <pubDate>Thu, 11 Feb 2016 00:00:00 -0200</pubDate>
+        </item>
+
+        <item>
+                <title>MVV O que? - MVVM aplicado à Xamarin</title>
+                <description>
+&lt;p&gt;Esse post é um indexador para a série “MVV O que? - MVVM aplicado à Xamarin”.&lt;/p&gt;
+
+&lt;h3 id=&quot;episdio-i---introduo--mvvm-e-mvvmcrossxamarin20160211episode-i&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/11/episode-I&quot;&gt;Episódio I - Introdução à MVVM e MvvmCross&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h3 id=&quot;episdio-ii---a-estrutura-de-um-app-mvvmcrossxamarin20160224episode-ii&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/24/episode-II&quot;&gt;Episódio II - A estrutura de um app MvvmCross&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h3 id=&quot;episdio-iii---data-binding-em-mvvmcross-101xamarin20160314episode-iii&quot;&gt;&lt;a href=&quot;/xamarin/2016/03/14/episode-III&quot;&gt;Episódio III - Data Binding em MvvmCross 101&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h3 id=&quot;episdio-iv---data-binding-em-mvvmcross-102xamarin20160403episode-iv&quot;&gt;&lt;a href=&quot;/xamarin/2016/04/03/episode-IV&quot;&gt;Episódio IV - Data Binding em MvvmCross 102&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h3 id=&quot;episdio-v---navegao-usando-mvvmcrossxamarin20160423episode-v&quot;&gt;&lt;a href=&quot;/xamarin/2016/04/23/episode-V&quot;&gt;Episódio V - Navegação usando MvvmCross&lt;/a&gt;&lt;/h3&gt;
+
+</description>
+                <link>http://willsb.github.io/xamarin/2016/02/10/index</link>
+                <guid>http://willsb.github.io/xamarin/2016/02/10/index</guid>
+                <pubDate>Wed, 10 Feb 2016 00:00:00 -0200</pubDate>
         </item>
 
 
