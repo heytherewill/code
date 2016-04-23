@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "await willsb.PreparePCLAsync();"
+tagline: "await willsb.PreparePCLAsync();"
 category: "xamarin"
-tagline: "Episódio II - A importância de usar async"
+title: "Episódio II - A importância de usar async"
 series: "pcl-async"
 tags : [pcl, async, xamarin]
 ---

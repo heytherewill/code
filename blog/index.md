@@ -16,8 +16,8 @@ description: ""
 	<li>
 		<a href="{{ BASE_PATH }}{{ post.url }}"> 
 		
-			<h3> {{ post.title }} </h3>
 			<h3> {{ post.tagline }} </h3>
+			<h3> {{ post.title }} </h3>
 			{{ preview }}
 		</a>
 

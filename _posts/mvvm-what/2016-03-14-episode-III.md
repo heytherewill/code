@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "MVV O que? - MVVM aplicado à Xamarin"
+tagline: "MVV O que? - MVVM aplicado à Xamarin"
 category: "xamarin"
-tagline: "Episódio III - Data Binding em MvvmCross 101"
+title: "Episódio III - Data Binding em MvvmCross 101"
 series: "mvvm-what"
 tags : [mvvm, xamarin, mvvmcross]
 ---
