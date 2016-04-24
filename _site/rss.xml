@@ -5,8 +5,8 @@
         <description>William Barbosa - William Barbosa</description>
         <link>http://willsb.github.io</link>
         <atom:link href="http://willsb.github.io/rss.xml" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Sat, 23 Apr 2016 22:37:17 -0300</lastBuildDate>
-        <pubDate>Sat, 23 Apr 2016 22:37:17 -0300</pubDate>
+        <lastBuildDate>Sun, 24 Apr 2016 12:28:10 -0300</lastBuildDate>
+        <pubDate>Sun, 24 Apr 2016 12:28:10 -0300</pubDate>
         <ttl>60</ttl>
 
 
@@ -333,17 +333,6 @@ set.Apply()
         </item>
 
         <item>
-                <title>Xamarin 101</title>
-                <description>
-&lt;p&gt;Esse post é um indexador para a série “Xamarin 101”.&lt;/p&gt;
-
-</description>
-                <link>http://willsb.github.io/xamarin/2016/02/28/index</link>
-                <guid>http://willsb.github.io/xamarin/2016/02/28/index</guid>
-                <pubDate>Sun, 28 Feb 2016 00:00:00 -0300</pubDate>
-        </item>
-
-        <item>
                 <title>Episódio II - A estrutura de um app MvvmCross</title>
                 <description>
 &lt;p&gt;&lt;img src=&quot;/assets/covers/mvvmwhat.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
@@ -508,15 +497,15 @@ set.Apply()
                 <description>
 &lt;p&gt;Esse post é um indexador para a série “MVV O que? - MVVM aplicado à Xamarin”.&lt;/p&gt;
 
-&lt;h3 id=&quot;mvv-o-que---mvvm-aplicado--xamarinxamarin20160211episode-i&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/11/episode-I&quot;&gt;MVV O que? - MVVM aplicado à Xamarin&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;episdio-i---introduo--mvvm-e-mvvmcrossxamarin20160211episode-i&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/11/episode-I&quot;&gt;Episódio I - Introdução à MVVM e MvvmCross&lt;/a&gt;&lt;/h3&gt;
 
-&lt;h3 id=&quot;mvv-o-que---mvvm-aplicado--xamarinxamarin20160224episode-ii&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/24/episode-II&quot;&gt;MVV O que? - MVVM aplicado à Xamarin&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;episdio-ii---a-estrutura-de-um-app-mvvmcrossxamarin20160224episode-ii&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/24/episode-II&quot;&gt;Episódio II - A estrutura de um app MvvmCross&lt;/a&gt;&lt;/h3&gt;
 
-&lt;h3 id=&quot;mvv-o-que---mvvm-aplicado--xamarinxamarin20160314episode-iii&quot;&gt;&lt;a href=&quot;/xamarin/2016/03/14/episode-III&quot;&gt;MVV O que? - MVVM aplicado à Xamarin&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;episdio-iii---data-binding-em-mvvmcross-101xamarin20160314episode-iii&quot;&gt;&lt;a href=&quot;/xamarin/2016/03/14/episode-III&quot;&gt;Episódio III - Data Binding em MvvmCross 101&lt;/a&gt;&lt;/h3&gt;
 
-&lt;h3 id=&quot;mvv-o-que---mvvm-aplicado--xamarinxamarin20160403episode-iv&quot;&gt;&lt;a href=&quot;/xamarin/2016/04/03/episode-IV&quot;&gt;MVV O que? - MVVM aplicado à Xamarin&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;episdio-iv---data-binding-em-mvvmcross-102xamarin20160403episode-iv&quot;&gt;&lt;a href=&quot;/xamarin/2016/04/03/episode-IV&quot;&gt;Episódio IV - Data Binding em MvvmCross 102&lt;/a&gt;&lt;/h3&gt;
 
-&lt;h3 id=&quot;mvv-o-que---mvvm-aplicado--xamarinxamarin20160423episode-v&quot;&gt;&lt;a href=&quot;/xamarin/2016/04/23/episode-V&quot;&gt;MVV O que? - MVVM aplicado à Xamarin&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;episdio-v---navegao-usando-mvvmcrossxamarin20160423episode-v&quot;&gt;&lt;a href=&quot;/xamarin/2016/04/23/episode-V&quot;&gt;Episódio V - Navegação usando MvvmCross&lt;/a&gt;&lt;/h3&gt;
 
 </description>
                 <link>http://willsb.github.io/xamarin/2016/02/10/index</link>

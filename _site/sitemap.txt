@@ -12,7 +12,6 @@ http://willsb.github.io/xamarin/2016/04/23/episode-V
 http://willsb.github.io/xamarin/2016/04/03/episode-IV
 http://willsb.github.io/xamarin/2016/03/14/episode-III
 http://willsb.github.io/xamarin/2016/03/02/episode-II
-http://willsb.github.io/xamarin/2016/02/28/index
 http://willsb.github.io/xamarin/2016/02/24/episode-II
 http://willsb.github.io/xamarin/2016/02/17/episode-I
 http://willsb.github.io/xamarin/2016/02/16/index
