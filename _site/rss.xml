@@ -5,8 +5,8 @@
         <description>William Barbosa - William Barbosa</description>
         <link>http://willsb.github.io</link>
         <atom:link href="http://willsb.github.io/rss.xml" rel="self" type="application/rss+xml" />
-        <lastBuildDate>Sat, 23 Apr 2016 12:33:46 -0300</lastBuildDate>
-        <pubDate>Sat, 23 Apr 2016 12:33:46 -0300</pubDate>
+        <lastBuildDate>Sat, 23 Apr 2016 22:37:17 -0300</lastBuildDate>
+        <pubDate>Sat, 23 Apr 2016 22:37:17 -0300</pubDate>
         <ttl>60</ttl>
 
 
@@ -333,6 +333,17 @@ set.Apply()
         </item>
 
         <item>
+                <title>Xamarin 101</title>
+                <description>
+&lt;p&gt;Esse post é um indexador para a série “Xamarin 101”.&lt;/p&gt;
+
+</description>
+                <link>http://willsb.github.io/xamarin/2016/02/28/index</link>
+                <guid>http://willsb.github.io/xamarin/2016/02/28/index</guid>
+                <pubDate>Sun, 28 Feb 2016 00:00:00 -0300</pubDate>
+        </item>
+
+        <item>
                 <title>Episódio II - A estrutura de um app MvvmCross</title>
                 <description>
 &lt;p&gt;&lt;img src=&quot;/assets/covers/mvvmwhat.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
@@ -438,9 +449,9 @@ set.Apply()
                 <description>
 &lt;p&gt;Esse post é um indexador para a série “await willsb.PreparePCLAsync();”.&lt;/p&gt;
 
-&lt;h3 id=&quot;await-willsbpreparepclasyncxamarin20160217episode-i&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/17/episode-I&quot;&gt;await willsb.PreparePCLAsync();&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;episdio-i---preparando-uma-pcl-para-xamarinxamarin20160217episode-i&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/17/episode-I&quot;&gt;Episódio I - Preparando uma PCL para Xamarin&lt;/a&gt;&lt;/h3&gt;
 
-&lt;h3 id=&quot;await-willsbpreparepclasyncxamarin20160302episode-ii&quot;&gt;&lt;a href=&quot;/xamarin/2016/03/02/episode-II&quot;&gt;await willsb.PreparePCLAsync();&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;episdio-ii---a-importncia-de-usar-asyncxamarin20160302episode-ii&quot;&gt;&lt;a href=&quot;/xamarin/2016/03/02/episode-II&quot;&gt;Episódio II - A importância de usar async&lt;/a&gt;&lt;/h3&gt;
 
 </description>
                 <link>http://willsb.github.io/xamarin/2016/02/16/index</link>

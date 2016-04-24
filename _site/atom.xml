@@ -4,7 +4,7 @@
  <title>William Barbosa</title>
  <link href="http://willsb.github.io/atom.xml" rel="self"/>
  <link href="http://willsb.github.io"/>
- <updated>2016-04-23T12:33:46-03:00</updated>
+ <updated>2016-04-23T22:37:17-03:00</updated>
  <id>http://willsb.github.io</id>
  <author>
    <name>William Barbosa</name>
@@ -335,6 +335,17 @@ set.Apply()
  </entry>
  
  <entry>
+   <title>Xamarin 101</title>
+   <link href="http://willsb.github.io/xamarin/2016/02/28/index"/>
+   <updated>2016-02-28T00:00:00-03:00</updated>
+   <id>http://willsb.github.io/xamarin/2016/02/28/index</id>
+   <content type="html">
+&lt;p&gt;Esse post é um indexador para a série “Xamarin 101”.&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
    <title>Episódio II - A estrutura de um app MvvmCross</title>
    <link href="http://willsb.github.io/xamarin/2016/02/24/episode-II"/>
    <updated>2016-02-24T00:00:00-03:00</updated>
@@ -443,9 +454,9 @@ set.Apply()
    <content type="html">
 &lt;p&gt;Esse post é um indexador para a série “await willsb.PreparePCLAsync();”.&lt;/p&gt;
 
-&lt;h3 id=&quot;await-willsbpreparepclasyncxamarin20160217episode-i&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/17/episode-I&quot;&gt;await willsb.PreparePCLAsync();&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;episdio-i---preparando-uma-pcl-para-xamarinxamarin20160217episode-i&quot;&gt;&lt;a href=&quot;/xamarin/2016/02/17/episode-I&quot;&gt;Episódio I - Preparando uma PCL para Xamarin&lt;/a&gt;&lt;/h3&gt;
 
-&lt;h3 id=&quot;await-willsbpreparepclasyncxamarin20160302episode-ii&quot;&gt;&lt;a href=&quot;/xamarin/2016/03/02/episode-II&quot;&gt;await willsb.PreparePCLAsync();&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;episdio-ii---a-importncia-de-usar-asyncxamarin20160302episode-ii&quot;&gt;&lt;a href=&quot;/xamarin/2016/03/02/episode-II&quot;&gt;Episódio II - A importância de usar async&lt;/a&gt;&lt;/h3&gt;
 
 </content>
  </entry>
