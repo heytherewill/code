@@ -190,11 +190,11 @@ header.the-header a {
 
 /* LINK */
 a:link {
-  color: #FF8855;
+  color: #3498DB;
   text-decoration: none;
 }
 a:visited {
-  color: #FF8855;
+  color: #3498DB;
   text-decoration: none;
 }
 a:hover {
@@ -203,7 +203,7 @@ a:hover {
 }
 
 .publish-date {
-  color: #FF8855;
+  color: #3498DB;
 }
 
 /* HIGHLIGHTER */
@@ -264,14 +264,14 @@ pre {
 .unit-article .entry-content h4,
 .unit-article .entry-content h5,
 .unit-article .entry-content h6 {
-  color: #FF8855;
+  color: #3498DB;
 }
 .unit-article .entry-content h2 a:link,
 .unit-article .entry-content h3 a:link,
 .unit-article .entry-content h4 a:link,
 .unit-article .entry-content h5 a:link,
 .unit-article .entry-content h6 a:link {
-  color: #FF8855;
+  color: #3498DB;
   border: 0;
 }
 .unit-article .entry-content h2 a:visited,
@@ -279,7 +279,7 @@ pre {
 .unit-article .entry-content h4 a:visited,
 .unit-article .entry-content h5 a:visited,
 .unit-article .entry-content h6 a:visited {
-  color: #FF8855;
+  color: #3498DB;
   border: 0;
 }
 .unit-article .entry-content h2 a:hover,
@@ -287,7 +287,7 @@ pre {
 .unit-article .entry-content h4 a:hover,
 .unit-article .entry-content h5 a:hover,
 .unit-article .entry-content h6 a:hover {
-  color: #FF8855;
+  color: #3498DB;
   border: 0;
 }
 .unit-article .entry-content:first-child h2,
@@ -405,7 +405,7 @@ pre {
   background-color: #f99157;
 }
 .unit-article .list-category span, .unit-article .list-tag span {
-  background-color: #FF8855;
+  background-color: #3498DB;
   padding: 1px 5px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
