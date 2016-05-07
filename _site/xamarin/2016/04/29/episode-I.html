@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Episódio I - Reduzindo pacotes Xamarin.Android</title>
+	<meta name="author" content="William Barbosa">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" media="all">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.eot" rel="stylesheet" media="all">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='/assets/themes//css/style.css' rel="stylesheet" media="all">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="Episódio I - Reduzindo pacotes Xamarin.Android" type="application/atom+xml">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="hentry">
+	<header class="the-header">
+		<div class="unit-head">
+			<div class="unit-inner unit-head-inner">
+				<a class="title" href="/blog">William Barbosa</a>
+					<ul>
+						<li class="icon email">
+							<a href="mailto:william.sb@hotmail.com" rel="me">
+								<i class="fi-mail"></i>
+							</a>
+						</li>
+						<li class="icon github">
+							<a href="http://github.com/willsb/" rel="me">
+								<i class="fi-social-github"></i>
+							</a>
+						</li>
+						<li class="icon facebook">
+							<a href="http://fb.com/Willkuns/" rel="me">
+								<i class="fi-social-facebook"></i>
+							</a>
+						</li>
+						<li class="icon twitter">
+							<a class="fi-social-twitter" href="http://twitter.com/willdotnet/" rel="me">
+								<i ></i>
+							</a>
+						</li>
+					</ul>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					
+<article class="unit-article layout-post">
+	<div class="unit-inner unit-article-inner">
+		<div class="content">
+			<header>
+				<div class="unit-head">
+					<div class="unit-inner unit-head-inner">
+						<h1 class="h2 entry-title">Episódio I - Reduzindo pacotes Xamarin.Android</h1>
+						<h6 class="publish-date"> Publicado em 29/04/2016 </h6>
+					</div><!-- unit-inner -->
+				</div><!-- unit-head -->
+			</header>
+
+			<div class="bd">
+				<div class="entry-content">
+					
+<p><img src="/assets/covers/xamarin101.png" alt="Cover" /></p>
+
+<h3 id="episdio-i---reduzindo-pacotes-xamarinandroid">Episódio I - Reduzindo pacotes Xamarin.Android</h3>
+
+<p>Observando as comunidades brasileiras de Xamarin desde a aquisição da Microsoft, percebe-se que uma grande quantidade de pessoas estão começando a estudar a plataforma (afinal agora existe a possibilidade de aprender sem pagar nada!). Em resposta a isso, vou começar uma nova série, voltada para novatos, que buscará responder dúvidas mais básicas e ensinar o caminho das pedras dessa fantástica plataforma que é o Xamarin. Esse é o primeiro post dessa série. No post de hoje eu irei falar sobre um tema crucial para qualquer desenvolvedor Xamarin: o tamanho do .apk.</p>
+
+<h3 id="como-assim-reduzir-os-pacotes">Como assim reduzir os pacotes?</h3>
+
+<p>Bom, vamos por partes. Xamarin permite que você escreva em C# e execute no Android. Tendo em vista que esse é um post para iniciantes eu não vou entrar nos detalhes de funcionamento da plataforma. É necessário, porém, entender um pouco do que o Xamarin faz para permitir que seu código C# rode em um dispositivo Android.</p>
+
+<p>Você já deve saber que o C# é uma linguagem que roda em cima de uma máquina virtual que compila o seu código em tempo de execução. Essa máquina virtual pode ser o CLR, da Microsoft, ou o <a href="https://github.com/mono/mono">Mono</a>, um projeto open source que busca fazer o mesmo em outros sistemas operacionais. O que acontece debaixo dos panos para o seu código C# rodar é uma versão do Mono sendo executada em um nível muito baixo (em cima do Kernel Linux do dispositivo).</p>
+
+<p>“E dai?” você me pergunta. O problema disso é que toda aplicação Xamarin.Android precisa levar para o dispositivo, além de todo o código que você escreveu, o Mono Runtime, que é o que permite a execução daquele código. Como apps escritos em Java não precisam disso, aplicativos escritos em Xamarin tendem a ser maiores que versões escritas em Java.</p>
+
+<h3 id="esse-mono-runtime-faz-um-hello-world-ter-100mb">Esse Mono Runtime faz um Hello World ter 100MB?</h3>
+
+<p>Isso tudo também não! O Mono e mais as bibliotecas necessárias para permitir o uso do .net framework no Android totalizam quase 16MB, de acordo com a própria Xamarin. Como você pode ver na imagem abaixo, é completamente absurdo que um app de 6KB pese 16MB só porque foi feito em Xamarin!</p>
+
+<p><img src="http://docs.xamarin.com/guides/android/advanced_topics/application_package_sizes/Images/hello_world_package_size_before_linker.png" alt="Pré linker" /></p>
+
+<p>É ai que entra o “Linker”. O Linker é uma ferramenta que analísa o seu código e remove partes que não estão sendo utilizadas. No modo mais tranquilo, o Linker é executado em cima dos Assemblies necessários para o funcionamento do Mono.Android. Como você pode ver, só de habilitar o linker o pacote da última imagem fica assim:</p>
+
+<p><img src="https://developer.xamarin.com/guides/android/advanced_topics/application_package_sizes/Images/hello_world_package_size_after_linker.png" alt="Pós-linker" /></p>
+
+<p>No modo mais agressivo, o linker é executado em cima de <em>todos os assemblies</em>. Isso inclui os assemblies já mencionados, o seu código e também o código de pacotes Nuget que você esteja usando na sua aplicação. Para habilitar o linker, vá nas opções do seu projeto &gt; Android Build &gt; Linker. As três opções de uso do linker são “Don’t Link”, “Link SDK Assemblies” e “Link All Assemblies”, que representam, respectivamente, não remover nada, remover só o código do runtime e remover código de todos assemblies. É inadmissível que um apk seja publicado sem usar pelo menos a opção “Link SDK Assemblies”, então certifique-se de habilita-la antes de colocar seu app na loja.</p>
+
+<h3 id="e-se-o-linker-cortar-coisa-demais">E se o Linker cortar coisa demais?</h3>
+
+<p>Como eu disse, a opção “Link All Assemblies” é bastante agressiva. Como a remoção de código é baseada em uma análise estática, pode ser que algumas partes do seu código sejam removidas por engano. Isso acontece se você estiver usando reflection, por exemplo. Ao usar reflection para construir uma classe, pode ser que o construtor dessa classe não seja usado em lugar nenhum do seu projeto. Como o linker não vê o construtor sendo usado, ele o remove. Durante a execução do seu app, as apis de reflection tentam achar o construtor e isso causa uma Exception.</p>
+
+<p>Para evitar esse comportamento você tem algumas opção. A primeira e mais simples é anotar o código que não é usado diretamente mas precisa ser preservado usando o atributo <a href="http://androidapi.xamarin.com/api/type/Android.Runtime.PreserveAttribute/"><code class="highlighter-rouge">Preserve</code></a>. Isso notifica o linker de que essa classe ou método precisa ficar onde está para o funcionamento do app. O atributo conta ainda com as opção <a href="http://androidapi.xamarin.com/api/field/Android.Runtime.PreserveAttribute.AllMembers/"><code class="highlighter-rouge">AllMembers</code></a>, que quando usada em uma classe preserva todos os seu membros, e [<code class="highlighter-rouge">Conditional</code>](http://androidapi.xamarin.com/api/field/Android.Runtime.PreserveAttribute.Conditional/, que preserva um membro somente se o tipo que o contém for preservado também.</p>
+
+<p>Para casos onde você não pode usar esse atributo (como PCLs ou código em pacotes nuget de terceiros), você pode recorrer ao linkskip (que é configurado em Options &gt; Android &gt; Linker &gt; Skip linking assemblies). Essa opção recebe uma lista de assemblies, com os nomes separados por um ponto e vírgula (;), e indica ao linker que esses assemblies devem ser ignorados.</p>
+
+<p>Se você quer preservar algo mas não quer preservar o assembly inteiro, há uma outra opção. Essa opção é criar um arquivo que “finge” utilizar o que você quer manter. Precisa ser código válido e ficar em uma classe que será compilada dentro do seu projeto, mas o método não precisa ser chamado. Ele só precisa estar lá. Isso engana o linker, fazendo com que ele pense que o método é usado (afinal não tem como definir isso em uma análise estática) e o método é mantigo. Um exemplo disso pode ser visto no arquivo <a href="https://github.com/MvvmCross/MvvmCross/blob/f7fcf18d960f578b851837f2aaaeb4d0e3b72364/nuspec/DroidContent/LinkerPleaseInclude.cs.pp"><code class="highlighter-rouge">LinkerPleaseInclude</code></a>, do projeto MvvmCross. Como você pode ver, o arquivo cria várias overloads do método <code class="highlighter-rouge">Include</code>. Esses métodos não são chamados em nenhum lugar, mas eles servem para manter as propriedades e métodos necessários ao funcionamento do Framework, mesmo quando o linker é habilitado!</p>
+
+<h3 id="e-alm-do-xamarin-quais-as-dicas-para-android">E além do Xamarin, quais as dicas para Android?</h3>
+
+<p>Um dica é usar a opção “Generate one package per selected ABI” e na aba advanced escolher quais arquiteturas você vai suportar. Isso ajuda pois o compilador criará um apk para cada versão suportada. Na hora de subir para loja, você sobe todos os arquivos (que são um pouco menores que o arquivo único) e o usuário final baixa apenas o que for relevante para a arquitetura do celular dele.</p>
+
+<p>Outra dica é utilizar o programa <a href="http://pnggauntlet.com/">PNGGauntlet</a> em todos os seus resources. Este programa remove informações não utilizadas das imagens, o que pode acarretar em reduções significativas no tamanho do seu app. Nem preciso dizer que remover imagens e arquivos não utilizados é uma excelente prática.</p>
+
+<h3 id="posso-pegar-um-certificado-de-concluso-de-curso-agora">Posso pegar um certificado de conclusão de curso agora?</h3>
+
+<p>Ainda não, ainda tem muita coisa nessa série. Diminuir o seu pacote é praticamente uma arte! É um processo que requer uma análise do seu projeto para definir a melhor estratégia. Contudo, ele não é nenhum bicho de sete cabeças, então nada de publicar apps gigantes por pura preguiça!</p>
+
+<p><strong>Sim, eu pretendo fazer um post desses sobre iOS :)</strong></p>
+
+					<div class="meta">
+						<ul class="list-category list-linear">
+							<li class="list-head">category:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/categories#xamarin-ref">
+    		xamarin <span>11</span>
+    	</a></li>
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/tags#xamarin.android-ref">xamarin.android <span>1</span></a></li>
+     
+    	<li><a href="/blog/tags#xamarin-ref">xamarin <span>11</span></a></li>
+     
+    	<li><a href="/blog/tags#android-ref">android <span>1</span></a></li>
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="willdotnet" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/willdotnet" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/xamarin/2016/04/28/index" title="View ">&laquo; </a></li>
+							
+							
+							
+						</ul>
+					</nav>
+				</div>
+			</footer>
+					
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+				</div><!-- misc-content -->
+				
+			</div><!-- bd -->
+
+		</div><!-- content -->
+	</div><!-- unit-inner -->
+</article>
+
+
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
+</div><!-- page -->
+<script>
+	(function(d, s) {
+		var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.src = url; js.id = id;
+		fjs.parentNode.insertBefore(js, fjs);
+		};
+	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/xamarin/2016/04/29/episode-I" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	}(document, 'script'));
+</script>
+<script>
+/*! A fix for the iOS orientationchange zoom bug.Script by @scottjehl, rebound by @wilto. MIT License.*/
+(function(j){var i=j.document;if(!i.querySelectorAll){return}var l=i.querySelectorAll("meta[name=viewport]")[0],a=l&&l.getAttribute("content"),h=a+", maximum-scale=1.0",d=a+", maximum-scale=10.0",g=true,c=j.orientation,k=0;if(!l){return}function f(){l.setAttribute("content",d);g=true}function b(){l.setAttribute("content",h);g=false}function e(m){c=Math.abs(j.orientation);k=Math.abs(m.gamma);if(k>8&&c===0){if(g){b()}}else{if(!g){f()}}}j.addEventListener("orientationchange",f,false);j.addEventListener("deviceorientation",e,false)})(this);
+</script>
+
+  
+
+
+
+</body>
+</html>
+
