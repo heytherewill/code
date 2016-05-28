@@ -11,3 +11,4 @@ tags : [mvvm, xamarin, mvvmcross]
 ![Cover](/assets/covers/mvvmwhat.png)
 
 ### Episódio VI - Injeção de dependência em MvvmCross
+

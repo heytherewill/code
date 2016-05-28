@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9 ie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Episódio II - PCL vs Shared Project</title>
+	<meta name="author" content="William Barbosa">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" media="all">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.eot" rel="stylesheet" media="all">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='/assets/themes//css/style.css' rel="stylesheet" media="all">
+	<link href="http://feeds.feedburner.com/" rel="alternate" title="Episódio II - PCL vs Shared Project" type="application/atom+xml">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.0.6/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="hentry">
+	<header class="the-header">
+		<div class="unit-head">
+			<div class="unit-inner unit-head-inner">
+				<a class="title" href="/blog">William Barbosa</a>
+					<ul>
+						<li class="icon email">
+							<a href="mailto:william.sb@hotmail.com" rel="me">
+								<i class="fi-mail"></i>
+							</a>
+						</li>
+						<li class="icon github">
+							<a href="http://github.com/willsb/" rel="me">
+								<i class="fi-social-github"></i>
+							</a>
+						</li>
+						<li class="icon facebook">
+							<a href="http://fb.com/Willkuns/" rel="me">
+								<i class="fi-social-facebook"></i>
+							</a>
+						</li>
+						<li class="icon twitter">
+							<a class="fi-social-twitter" href="http://twitter.com/willdotnet/" rel="me">
+								<i ></i>
+							</a>
+						</li>
+					</ul>
+			</div><!-- unit-inner -->
+		</div><!-- unit-head -->
+	</header>
+	<div class="body" role="main">
+		<div class="unit-body">
+			<div class="unit-inner unit-body-inner">
+				<div class="entry-content">
+					
+<article class="unit-article layout-post">
+	<div class="unit-inner unit-article-inner">
+		<div class="content">
+			<header>
+				<div class="unit-head">
+					<div class="unit-inner unit-head-inner">
+						<h1 class="h2 entry-title">Episódio II - PCL vs Shared Project</h1>
+						<h6 class="publish-date"> Publicado em 28/05/2016 </h6>
+					</div><!-- unit-inner -->
+				</div><!-- unit-head -->
+			</header>
+
+			<div class="bd">
+				<div class="entry-content">
+					
+<p><img src="/assets/covers/xamarin101.png" alt="Cover" /></p>
+
+<h3 id="episdio-ii---pcl-vs-shared-project">Episódio II - PCL vs Shared Project</h3>
+
+<p>Este post é parte da série Xamarin 101, que é voltada para pessoas que estão começando no Xamarin. A lista com todos os posts da série pode ser encontrada <a href="/xamarin/2016/04/28/index">aqui</a>. No post de hoje iremos falar sobre uma dúvida que aparece logo na hora de criar o projeto, antes mesmo de você começar a programar: Devo compartilhar código usando PCL ou Shared Project?</p>
+
+<h3 id="compartilhamento-de-cdigo">Compartilhamento de código?</h3>
+
+<p>Como vocês já devem saber, uma das grandes vantagens do Xamarin é a capacidade de compartilhamento de código entre plataformas. Já que todo seu código roda no mesmo runtime você consegue usar partes desse código em mais de um lugar. Isso é uma perspectiva muito interessante; Imagine que a mesma linha de código é executada tanto em um XBox quanto em um iPad, passando por dispositivos Android, wearables e Desktops. É sensacional!</p>
+
+<p>Como nem tudo são flores, não tem como compartilhar <strong>todo</strong> código. Dispositivos diferentes tem necessidades diferetes (e expõem APIs diferentes). Isso quer dizer que nem tudo que um iPhone faz o seu relógio faz! Sendo assim, a estatégia geral é ter uma área de código comum que pode ser compartilhada entre as plataformas.</p>
+
+<p>Existem duas maneiras de abordar esse problema: PCLs e Shared Projects. Eu já falei sobre PCLs antes aqui no blog <a href="/xamarin/2016/02/17/episode-I">nesse artigo</a>), então vocês podem le-lo  para se familiarizar com os conceitos, caso não saibam. Vou começar falando sobre os Shared Projects.</p>
+
+<h3 id="shared-projects">Shared Projects?</h3>
+
+<p>Um Shared Project é diferente de uma PCL pois ele não é compilado diretamente. Ao invés disso, todos os arquivos que estão no seu Shared Project são incluídos no projeto específico de cada plataforma e compilados ao mesmo tempo. Isso faz com que você possa escrever qualquer coisa nos arquivos que estão no Shared Project, pois o compilador irá verificar se aquele código é válido uma vez para cada compilação específica de plataforma.</p>
+
+<p>Claro que isso não faz apis aparecerem magicamente. Se você usar, por exemplo, o tipo <code class="highlighter-rouge">UIImage</code> no Shared Project, ele vai compilar perfeitamente no iOS e falhar no Android, já que <code class="highlighter-rouge">UIImage</code> não existe nas apis do Android. É exatamente nesse momento que o Shared Project pode começar a ficar bagunçado, pois é quando você começa a precisar das chamadas <strong>diretivas de pré-processamento</strong>.</p>
+
+<h3 id="diretiva-do-que">Diretiva do que?</h3>
+
+<p>Apesar do nome elegante, você provavelmente já esbarrou com alguma dessas antes. Diretivas de pré-processamento são instruções iniciadas com <code class="highlighter-rouge">#</code> que alteram o código que será compilado, na fase de análise léxica. As diretivas que são amplamente utilizadas nos Shared projects são o <code class="highlighter-rouge">#if</code> e o <code class="highlighter-rouge">#endif</code></p>
+
+<p>A diretiva <code class="highlighter-rouge">#if</code> verifica se um símbolo foi definido. Se ele foi definido, as linhas de código até a linha que contém o <code class="highlighter-rouge">#endif</code> serão compiladas. Caso o símbolo não exista, elas serão ignoradas. Um exemplo clássico disso é quando você precisa de um comportamento diverso para builds de desenvolvimento e de produção. O símbolo <code class="highlighter-rouge">DEBUG</code> é definido apenas em builds de debug, então você consegue fazer algo assim:</p>
+
+<p>#if DEBUG
+System.Console.Write($”WARNING: {message}”)
+#endif</p>
+
+<p>No exemplo acima, a linha que mostra a mensagem no console só será inclusa em builds de debug. Para as builds de release essa linha será ignorada. Símbolos novos podem ser definidos nas configurações do projeto ou usando a diretiva <a href="https://msdn.microsoft.com/pt-br/library/yt3yck0x.aspx"><code class="highlighter-rouge">#define</code></a>.</p>
+
+<p>O mesmo pode ser feito para incluir código condicional no Shared Project. O símbolo <code class="highlighter-rouge">__ANDROID__</code> já vem definido nos templates de projetos Android (e o mesmo para o símbolo <code class="highlighter-rouge">__IOS__</code>). Isso quer dizer que código já pode ser incluído de forma condicional. Veja o exemplo abaixo:</p>
+
+<p>var byteArray = await GetImageFromFromUrlAsync(“https://placekitten.com/400/400”);</p>
+
+<p>#if <strong>ANDROID</strong>
+//TODO: Carregar a imagem para Android
+#endif</p>
+
+<p>#if <strong>IOS</strong>
+//TODO: Carregar a imagem para iOS
+#endif</p>
+
+<p>O código dentro do primeiro bloco só será compilado em projetos Android. Isso significa que dentro desse bloco você pode colocar código específico de Android, pois ele será ignorado em outras plataformas.</p>
+
+<h3 id="e-qual-o-problema-dessa-abordagem">E qual o problema dessa abordagem?</h3>
+
+<p>Essa técnica tem dois problemas e ambos vão aumentando junto com o tamanho do seu projeto. O primeiro é o fato de que esse monte de diretivas torna o seu código uma bagunça. Conforme a complexidade do seu código vai aumentando, esse monte de linhas adicionais vão se somando e tornando a manutenção do seu código cada vez mais complicado.</p>
+
+<p>O segundo problema é o fato de apenas algumas linhas do seu código serem analisadas por vez. Isso significa que você pode fazer alterações que literalmente quebram em alguma plataforma e você só vai fazer isso quando tentar compilar a outra plataforma, o que é um problema enorme.</p>
+
+<p>Esses dois problemas (e o fato de que ambos fazem projetos escalar muito mal) faz com que muitas pessoas usem PCL e abominem Shared Projects por completo.</p>
+
+<h3 id="ento-o-shared-project--um-erro">Então o Shared Project é um erro?</h3>
+
+<p>Não necessariamente. Eu, por exemplo, sou um advogado da PCL. Prefiro utiliza-la em todos os meus projetos. Existem contudo inúmeros desenvolvedores que preferem usar Shared Project (um deles é ninguém menos que o próprio <a href="http://tirania.org/blog/archive/2016/Jan-22.html">Miguel de Icaza</a>).</p>
+
+<p>O que esses desenvolvedores defendem não é esse monte de <code class="highlighter-rouge">#if</code> amontoado. O que acontece é que existe um outro jeito de usar os Shared Projects. Esse jeito é por meio de <a href="https://msdn.microsoft.com/pt-br/library/wa80x488.aspx">partial classes</a>.</p>
+
+<p>Esse método é simples, limpo e livre de problemas. Você apenas precisa criar um método parcial que isola a funcionalidade específica de cada plataforma. Feito isso, todo o código que fica no Shared Project roda de forma cross em todas as suas plataformas. O código específico é implementado em outro arquivo, no projeto específico.</p>
+
+<p>Essa abordagem resolve ambos os problemas das diretivas. Você não tem um monte de <code class="highlighter-rouge">#if</code> sem necessidade, não tem código “morto” flutuando e tem uma separação clara das fronteiras entre código compartilhado e específico de plataforma.</p>
+
+<h3 id="qual-a-concluso-disso-tudo">Qual a conclusão disso tudo?</h3>
+
+<p>Como quase sempre, nenhuma. O objetivo desse post é ensinar as diferenças desses dois tipos de projeto. A PCL limita o framework com o intuito de garantir que o seu código funciona em todas as plataformas que você pretende desenvolver. O resto do código pode ser inserido com injeção de dependência. O Shared Project não proíbe nada e você pode usar diretivas de pré-processamento ou partial classes para garantir que seu código funciona em todas as plataformas.</p>
+
+<p>Tendo esse conhecimento em mãos, cabe a você escolher o que melhor resolve seu problema. A via de regra é que se você vai compartilhar seu código (com uma biblioteca, por exemplo) o melhor é usar PCL. Para código seu (em caso de apps) você pode escolher entre as duas opções. Eu sempre escolho PCL, mas você tem liberdade de escolha.</p>
+
+<p>Espero que vocês tenham gostado do conteúdo e, se algum dia tiverem que dar manutenção em algum app que usar Shared Project, lembre-se de usar partial classes :)</p>
+
+					<div class="meta">
+						<ul class="list-category list-linear">
+							<li class="list-head">category:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/categories#xamarin-ref">
+    		xamarin <span>12</span>
+    	</a></li>
+    
+  
+
+
+						</ul>
+						<ul class="list-tag list-linear">
+							<li class="list-head">tags:   </li>
+							
+							
+
+
+  
+     
+    	<li><a href="/blog/tags#xamarin.android-ref">xamarin.android <span>2</span></a></li>
+     
+    	<li><a href="/blog/tags#xamarin-ref">xamarin <span>12</span></a></li>
+     
+    	<li><a href="/blog/tags#android-ref">android <span>2</span></a></li>
+    
+  
+
+
+
+						</ul>
+					</div><!-- meta -->
+				</div><!-- entry-content -->
+				<div class="misc-content">
+					<div class="social">
+						<ul class="list-linear">
+							<li><div class="twitter-tweet"><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="willdotnet" data-lang="en">Tweet</a></div></li>
+							<li><div class="twitter-follow"><a href="https://twitter.com/willdotnet" class="twitter-follow-button" data-show-count="false" data-lang="en"></a></div></li>
+						</ul>
+					</div>
+					
+			<footer class="unit-foot">
+				<div class="unit-inner unit-foot-inner">
+					<nav class="pagination">
+						<ul>
+							
+							<li class="prev"><a class="internal" rel="prev"  href="/xamarin/2016/04/29/episode-I" title="View Xamarin 101">&laquo; Xamarin 101</a></li>
+							
+							
+							
+						</ul>
+					</nav>
+				</div>
+			</footer>
+					
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+				</div><!-- misc-content -->
+				
+			</div><!-- bd -->
+
+		</div><!-- content -->
+	</div><!-- unit-inner -->
+</article>
+
+
+				</div>
+			</div><!-- unit-inner -->
+		</div><!-- unit-body -->
+	</div><!-- body -->
+</div><!-- page -->
+<script>
+	(function(d, s) {
+		var js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.src = url; js.id = id;
+		fjs.parentNode.insertBefore(js, fjs);
+		};
+	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
+	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="/xamarin/2016/05/28/episode-II" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
+	}(document, 'script'));
+</script>
+<script>
+/*! A fix for the iOS orientationchange zoom bug.Script by @scottjehl, rebound by @wilto. MIT License.*/
+(function(j){var i=j.document;if(!i.querySelectorAll){return}var l=i.querySelectorAll("meta[name=viewport]")[0],a=l&&l.getAttribute("content"),h=a+", maximum-scale=1.0",d=a+", maximum-scale=10.0",g=true,c=j.orientation,k=0;if(!l){return}function f(){l.setAttribute("content",d);g=true}function b(){l.setAttribute("content",h);g=false}function e(m){c=Math.abs(j.orientation);k=Math.abs(m.gamma);if(k>8&&c===0){if(g){b()}}else{if(!g){f()}}}j.addEventListener("orientationchange",f,false);j.addEventListener("deviceorientation",e,false)})(this);
+</script>
+
+  
+
+
+
+</body>
+</html>
+

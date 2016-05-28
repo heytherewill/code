@@ -4,13 +4,93 @@
  <title>William Barbosa</title>
  <link href="http://willsb.github.io/atom.xml" rel="self"/>
  <link href="http://willsb.github.io"/>
- <updated>2016-05-07T10:13:16-03:00</updated>
+ <updated>2016-05-28T19:30:23-03:00</updated>
  <id>http://willsb.github.io</id>
  <author>
    <name>William Barbosa</name>
    <email>william.sb@hotmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Episódio II - PCL vs Shared Project</title>
+   <link href="http://willsb.github.io/xamarin/2016/05/28/episode-II"/>
+   <updated>2016-05-28T00:00:00-03:00</updated>
+   <id>http://willsb.github.io/xamarin/2016/05/28/episode-II</id>
+   <content type="html">
+&lt;p&gt;&lt;img src=&quot;/assets/covers/xamarin101.png&quot; alt=&quot;Cover&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;episdio-ii---pcl-vs-shared-project&quot;&gt;Episódio II - PCL vs Shared Project&lt;/h3&gt;
+
+&lt;p&gt;Este post é parte da série Xamarin 101, que é voltada para pessoas que estão começando no Xamarin. A lista com todos os posts da série pode ser encontrada &lt;a href=&quot;/xamarin/2016/04/28/index&quot;&gt;aqui&lt;/a&gt;. No post de hoje iremos falar sobre uma dúvida que aparece logo na hora de criar o projeto, antes mesmo de você começar a programar: Devo compartilhar código usando PCL ou Shared Project?&lt;/p&gt;
+
+&lt;h3 id=&quot;compartilhamento-de-cdigo&quot;&gt;Compartilhamento de código?&lt;/h3&gt;
+
+&lt;p&gt;Como vocês já devem saber, uma das grandes vantagens do Xamarin é a capacidade de compartilhamento de código entre plataformas. Já que todo seu código roda no mesmo runtime você consegue usar partes desse código em mais de um lugar. Isso é uma perspectiva muito interessante; Imagine que a mesma linha de código é executada tanto em um XBox quanto em um iPad, passando por dispositivos Android, wearables e Desktops. É sensacional!&lt;/p&gt;
+
+&lt;p&gt;Como nem tudo são flores, não tem como compartilhar &lt;strong&gt;todo&lt;/strong&gt; código. Dispositivos diferentes tem necessidades diferetes (e expõem APIs diferentes). Isso quer dizer que nem tudo que um iPhone faz o seu relógio faz! Sendo assim, a estatégia geral é ter uma área de código comum que pode ser compartilhada entre as plataformas.&lt;/p&gt;
+
+&lt;p&gt;Existem duas maneiras de abordar esse problema: PCLs e Shared Projects. Eu já falei sobre PCLs antes aqui no blog &lt;a href=&quot;/xamarin/2016/02/17/episode-I&quot;&gt;nesse artigo&lt;/a&gt;), então vocês podem le-lo  para se familiarizar com os conceitos, caso não saibam. Vou começar falando sobre os Shared Projects.&lt;/p&gt;
+
+&lt;h3 id=&quot;shared-projects&quot;&gt;Shared Projects?&lt;/h3&gt;
+
+&lt;p&gt;Um Shared Project é diferente de uma PCL pois ele não é compilado diretamente. Ao invés disso, todos os arquivos que estão no seu Shared Project são incluídos no projeto específico de cada plataforma e compilados ao mesmo tempo. Isso faz com que você possa escrever qualquer coisa nos arquivos que estão no Shared Project, pois o compilador irá verificar se aquele código é válido uma vez para cada compilação específica de plataforma.&lt;/p&gt;
+
+&lt;p&gt;Claro que isso não faz apis aparecerem magicamente. Se você usar, por exemplo, o tipo &lt;code class=&quot;highlighter-rouge&quot;&gt;UIImage&lt;/code&gt; no Shared Project, ele vai compilar perfeitamente no iOS e falhar no Android, já que &lt;code class=&quot;highlighter-rouge&quot;&gt;UIImage&lt;/code&gt; não existe nas apis do Android. É exatamente nesse momento que o Shared Project pode começar a ficar bagunçado, pois é quando você começa a precisar das chamadas &lt;strong&gt;diretivas de pré-processamento&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;diretiva-do-que&quot;&gt;Diretiva do que?&lt;/h3&gt;
+
+&lt;p&gt;Apesar do nome elegante, você provavelmente já esbarrou com alguma dessas antes. Diretivas de pré-processamento são instruções iniciadas com &lt;code class=&quot;highlighter-rouge&quot;&gt;#&lt;/code&gt; que alteram o código que será compilado, na fase de análise léxica. As diretivas que são amplamente utilizadas nos Shared projects são o &lt;code class=&quot;highlighter-rouge&quot;&gt;#if&lt;/code&gt; e o &lt;code class=&quot;highlighter-rouge&quot;&gt;#endif&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;A diretiva &lt;code class=&quot;highlighter-rouge&quot;&gt;#if&lt;/code&gt; verifica se um símbolo foi definido. Se ele foi definido, as linhas de código até a linha que contém o &lt;code class=&quot;highlighter-rouge&quot;&gt;#endif&lt;/code&gt; serão compiladas. Caso o símbolo não exista, elas serão ignoradas. Um exemplo clássico disso é quando você precisa de um comportamento diverso para builds de desenvolvimento e de produção. O símbolo &lt;code class=&quot;highlighter-rouge&quot;&gt;DEBUG&lt;/code&gt; é definido apenas em builds de debug, então você consegue fazer algo assim:&lt;/p&gt;
+
+&lt;p&gt;#if DEBUG
+System.Console.Write($”WARNING: {message}”)
+#endif&lt;/p&gt;
+
+&lt;p&gt;No exemplo acima, a linha que mostra a mensagem no console só será inclusa em builds de debug. Para as builds de release essa linha será ignorada. Símbolos novos podem ser definidos nas configurações do projeto ou usando a diretiva &lt;a href=&quot;https://msdn.microsoft.com/pt-br/library/yt3yck0x.aspx&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;#define&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;O mesmo pode ser feito para incluir código condicional no Shared Project. O símbolo &lt;code class=&quot;highlighter-rouge&quot;&gt;__ANDROID__&lt;/code&gt; já vem definido nos templates de projetos Android (e o mesmo para o símbolo &lt;code class=&quot;highlighter-rouge&quot;&gt;__IOS__&lt;/code&gt;). Isso quer dizer que código já pode ser incluído de forma condicional. Veja o exemplo abaixo:&lt;/p&gt;
+
+&lt;p&gt;var byteArray = await GetImageFromFromUrlAsync(“https://placekitten.com/400/400”);&lt;/p&gt;
+
+&lt;p&gt;#if &lt;strong&gt;ANDROID&lt;/strong&gt;
+//TODO: Carregar a imagem para Android
+#endif&lt;/p&gt;
+
+&lt;p&gt;#if &lt;strong&gt;IOS&lt;/strong&gt;
+//TODO: Carregar a imagem para iOS
+#endif&lt;/p&gt;
+
+&lt;p&gt;O código dentro do primeiro bloco só será compilado em projetos Android. Isso significa que dentro desse bloco você pode colocar código específico de Android, pois ele será ignorado em outras plataformas.&lt;/p&gt;
+
+&lt;h3 id=&quot;e-qual-o-problema-dessa-abordagem&quot;&gt;E qual o problema dessa abordagem?&lt;/h3&gt;
+
+&lt;p&gt;Essa técnica tem dois problemas e ambos vão aumentando junto com o tamanho do seu projeto. O primeiro é o fato de que esse monte de diretivas torna o seu código uma bagunça. Conforme a complexidade do seu código vai aumentando, esse monte de linhas adicionais vão se somando e tornando a manutenção do seu código cada vez mais complicado.&lt;/p&gt;
+
+&lt;p&gt;O segundo problema é o fato de apenas algumas linhas do seu código serem analisadas por vez. Isso significa que você pode fazer alterações que literalmente quebram em alguma plataforma e você só vai fazer isso quando tentar compilar a outra plataforma, o que é um problema enorme.&lt;/p&gt;
+
+&lt;p&gt;Esses dois problemas (e o fato de que ambos fazem projetos escalar muito mal) faz com que muitas pessoas usem PCL e abominem Shared Projects por completo.&lt;/p&gt;
+
+&lt;h3 id=&quot;ento-o-shared-project--um-erro&quot;&gt;Então o Shared Project é um erro?&lt;/h3&gt;
+
+&lt;p&gt;Não necessariamente. Eu, por exemplo, sou um advogado da PCL. Prefiro utiliza-la em todos os meus projetos. Existem contudo inúmeros desenvolvedores que preferem usar Shared Project (um deles é ninguém menos que o próprio &lt;a href=&quot;http://tirania.org/blog/archive/2016/Jan-22.html&quot;&gt;Miguel de Icaza&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;O que esses desenvolvedores defendem não é esse monte de &lt;code class=&quot;highlighter-rouge&quot;&gt;#if&lt;/code&gt; amontoado. O que acontece é que existe um outro jeito de usar os Shared Projects. Esse jeito é por meio de &lt;a href=&quot;https://msdn.microsoft.com/pt-br/library/wa80x488.aspx&quot;&gt;partial classes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Esse método é simples, limpo e livre de problemas. Você apenas precisa criar um método parcial que isola a funcionalidade específica de cada plataforma. Feito isso, todo o código que fica no Shared Project roda de forma cross em todas as suas plataformas. O código específico é implementado em outro arquivo, no projeto específico.&lt;/p&gt;
+
+&lt;p&gt;Essa abordagem resolve ambos os problemas das diretivas. Você não tem um monte de &lt;code class=&quot;highlighter-rouge&quot;&gt;#if&lt;/code&gt; sem necessidade, não tem código “morto” flutuando e tem uma separação clara das fronteiras entre código compartilhado e específico de plataforma.&lt;/p&gt;
+
+&lt;h3 id=&quot;qual-a-concluso-disso-tudo&quot;&gt;Qual a conclusão disso tudo?&lt;/h3&gt;
+
+&lt;p&gt;Como quase sempre, nenhuma. O objetivo desse post é ensinar as diferenças desses dois tipos de projeto. A PCL limita o framework com o intuito de garantir que o seu código funciona em todas as plataformas que você pretende desenvolver. O resto do código pode ser inserido com injeção de dependência. O Shared Project não proíbe nada e você pode usar diretivas de pré-processamento ou partial classes para garantir que seu código funciona em todas as plataformas.&lt;/p&gt;
+
+&lt;p&gt;Tendo esse conhecimento em mãos, cabe a você escolher o que melhor resolve seu problema. A via de regra é que se você vai compartilhar seu código (com uma biblioteca, por exemplo) o melhor é usar PCL. Para código seu (em caso de apps) você pode escolher entre as duas opções. Eu sempre escolho PCL, mas você tem liberdade de escolha.&lt;/p&gt;
+
+&lt;p&gt;Espero que vocês tenham gostado do conteúdo e, se algum dia tiverem que dar manutenção em algum app que usar Shared Project, lembre-se de usar partial classes :)&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Episódio I - Reduzindo pacotes Xamarin.Android</title>
@@ -77,6 +157,8 @@
 &lt;p&gt;Esse post é um indexador para a série “Xamarin 101”.&lt;/p&gt;
 
 &lt;h3 id=&quot;episdio-i---reduzindo-pacotes-xamarinandroidxamarin20160429episode-i&quot;&gt;&lt;a href=&quot;/xamarin/2016/04/29/episode-I&quot;&gt;Episódio I - Reduzindo pacotes Xamarin.Android&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h3 id=&quot;episdio-ii---pcl-vs-shared-projectxamarin20160528episode-ii&quot;&gt;&lt;a href=&quot;/xamarin/2016/05/28/episode-II&quot;&gt;Episódio II - PCL vs Shared Project&lt;/a&gt;&lt;/h3&gt;
 
 </content>
  </entry>
