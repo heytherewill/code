@@ -12,7 +12,7 @@ tags : [mvvm, xamarin, mvvmcross]
 
 ### Episódio III - Data Binding em MvvmCross 101
 
-Esse post é a continuação da série sobre MvvmCross em Xamarin. Você pode ler os episódios anteriores [aqui](/xamarin/2016/02/11/episode-I) e [aqui](/xamarin/2016/02/24/episode-II). Também é recomendada a leitura do artigo Preparando uma PCL para Xamarin, episódios [I](/xamarin/2016/02/17/episode-I) e [II](), onde eu explico sobre PCLs e o básico sobre assíncronia. Esse post tem como intuito ensinar um dos mecanismos mais importantes do padrão MVVM: Data Binding. Iremos ver como esse processo funciona de forma geral (na arquitetura MVVM) e como é a implementação de DataBinding do MvvmCross. Vamos lá?
+Esse post é a continuação da série sobre MvvmCross em Xamarin. Você pode ler os episódios anteriores [aqui](/xamarin/2016/02/11/episode-I) e [aqui](/xamarin/2016/02/24/episode-II). Também é recomendada a leitura do artigo Preparando uma PCL para Xamarin, episódios [I](/xamarin/2016/02/17/episode-I) e [II](/xamarin/2016/03/02/episode-II), onde eu explico sobre PCLs e o básico sobre assíncronia. Esse post tem como intuito ensinar um dos mecanismos mais importantes do padrão MVVM: Data Binding. Iremos ver como esse processo funciona de forma geral (na arquitetura MVVM) e como é a implementação de DataBinding do MvvmCross. Vamos lá?
 
 ### Data Binding?
 
