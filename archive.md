@@ -1,6 +1,6 @@
 ---
 layout: page
-title : Arquivo
+title : Posts
 header : Post Archive
 group: navigation
 ---

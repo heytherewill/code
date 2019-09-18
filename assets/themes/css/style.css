@@ -24,7 +24,7 @@ Calculation should be done via  http://j.mp/rNg5uA
 No styleguide reference.
 */
 body {
-  font-family: "Open Sans", Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, "MS PGothic", Osaka, Sans-Serif;
+  font-family: "Roboto", Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, "MS PGothic", Osaka, Sans-Serif;
   font-size: 1em;
   line-height: 1.625em;
 }
@@ -190,11 +190,11 @@ header.the-header a {
 
 /* LINK */
 a:link {
-  color: #3498DB;
+  color: #2d2d2d;
   text-decoration: none;
 }
 a:visited {
-  color: #3498DB;
+  color: #2d2d2d;
   text-decoration: none;
 }
 a:hover {
@@ -203,7 +203,7 @@ a:hover {
 }
 
 .publish-date {
-  color: #3498DB;
+  color: #2d2d2d;
 }
 
 /* HIGHLIGHTER */
@@ -264,14 +264,14 @@ pre {
 .unit-article .entry-content h4,
 .unit-article .entry-content h5,
 .unit-article .entry-content h6 {
-  color: #3498DB;
+  color: #2D2D2D;
 }
 .unit-article .entry-content h2 a:link,
 .unit-article .entry-content h3 a:link,
 .unit-article .entry-content h4 a:link,
 .unit-article .entry-content h5 a:link,
 .unit-article .entry-content h6 a:link {
-  color: #3498DB;
+  color: #2D2D2D;
   border: 0;
 }
 .unit-article .entry-content h2 a:visited,
@@ -279,7 +279,7 @@ pre {
 .unit-article .entry-content h4 a:visited,
 .unit-article .entry-content h5 a:visited,
 .unit-article .entry-content h6 a:visited {
-  color: #3498DB;
+  color: #2D2D2D;
   border: 0;
 }
 .unit-article .entry-content h2 a:hover,
@@ -287,7 +287,7 @@ pre {
 .unit-article .entry-content h4 a:hover,
 .unit-article .entry-content h5 a:hover,
 .unit-article .entry-content h6 a:hover {
-  color: #3498DB;
+  color: #2D2D2D;
   border: 0;
 }
 .unit-article .entry-content:first-child h2,
@@ -405,7 +405,7 @@ pre {
   background-color: #f99157;
 }
 .unit-article .list-category span, .unit-article .list-tag span {
-  background-color: #3498DB;
+  background-color: #2D2D2D;
   padding: 1px 5px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -453,8 +453,6 @@ pre {
 }
 /* post & page */
 .layout-page .tag_box {
-  background: url('/assets/themes/the-minimum/skin/100-90-5-monochrome.png') repeat 0 0 #999999;
-  padding: 0.8125em;
   list-style: none;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -462,9 +460,6 @@ pre {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.4);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.4);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 .layout-page .tag_box li {
   display: inline;
@@ -472,9 +467,9 @@ pre {
   vertical-align: middle;
 }
 .layout-page .tag_box a {
-  background-color: #99cc99;
+  background-color: #fafafa;
   float: left;
-  border: 1px solid #448844;
+  border: 1px solid #2D2D2D;
   padding: 3px 6px 3px 6px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -503,16 +498,16 @@ pre {
   border: solid #336633;
 }
 .layout-page .tag_box a:hover {
-  background-color: #77bb77;
-  border: 1px solid #336633;
+  background-color: #e1e1e1;
+  border: 1px solid #2D2D2D;
 }
 .layout-page .tag_box a:hover span {
   background-color: #e1e1e1;
-  border: 1px solid #77bb77;
+  border: 1px solid #2D2D2D;
 }
 .layout-page .tag_box span {
   background-color: #fafafa;
-  border: 1px solid #99cc99;
+  border: 1px solid #2D2D2D;
   padding: 1px 5px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;

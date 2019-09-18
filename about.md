@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Sobre 
+title: About 
 header: Pages
 group: navigation
 ---

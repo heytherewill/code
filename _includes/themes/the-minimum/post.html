@@ -34,24 +34,23 @@
 						</ul>
 					</div>
 					
-			<footer class="unit-foot">
-				<div class="unit-inner unit-foot-inner">
-					<nav class="pagination">
-						<ul>
-							{% if page.previous %}
-							<li class="prev"><a class="internal" rel="prev"  href="{{ page.previous.url }}" title="View {{ page.previous.tagline }}">&laquo; {{ page.previous.tagline }}</a></li>
-							{% endif %}
-							{% if page.previous and page.next %}
-							<li class="pipe"> | </li>
-							{% endif %}
-							{% if page.next %}
-							<li class="next"><a class="internal" rel="next"  href="{{ page.next.url }}" title="View {{ page.next.tagline }}">{{ page.next.tagline }} &raquo;</a></li>
-							{% endif %}
-						</ul>
-					</nav>
-				</div>
-			</footer>
-					{% include JB/comments %}
+					<footer class="unit-foot">
+						<div class="unit-inner unit-foot-inner">
+							<nav class="pagination">
+								<ul>
+									{% if page.previous %}
+									<li class="prev"><a class="internal" rel="prev"  href="{{ page.previous.url }}" title="View {{ page.previous.tagline }}">&laquo; {{ page.previous.tagline }}</a></li>
+									{% endif %}
+									{% if page.previous and page.next %}
+									<li class="pipe"> | </li>
+									{% endif %}
+									{% if page.next %}
+									<li class="next"><a class="internal" rel="next"  href="{{ page.next.url }}" title="View {{ page.next.tagline }}">{{ page.next.tagline }} &raquo;</a></li>
+									{% endif %}
+								</ul>
+							</nav>
+						</div>
+					</footer>
 				</div><!-- misc-content -->
 				
 			</div><!-- bd -->

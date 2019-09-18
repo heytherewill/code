@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Ultimos posts"
+title: "Latest posts"
 description: ""
 ---
 {% include JB/setup %}
@@ -21,7 +21,7 @@ description: ""
 			{{ preview }}
 		</a>
 
-		<h6> Publicado em {{ post.date | date: "%d/%m/%Y" }} </h6>
+		<h6> Published in {{ post.date | date: "%d/%m/%Y" }} </h6>
 	</li>
     {% endif %}
 
