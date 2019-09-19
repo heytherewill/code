@@ -25,7 +25,7 @@ No styleguide reference.
 */
 body {
   font-family: "Roboto", Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, "MS PGothic", Osaka, Sans-Serif;
-  font-size: 1em;
+  font-size: 1.2em;
   line-height: 1.625em;
 }
 /*
@@ -103,9 +103,7 @@ blockquote cite {
 strong {
   font-weight: bold;
 }
-em {
-  font-weight: bold;
-}
+
 /*
 Color schemes
 
@@ -309,9 +307,6 @@ pre {
 .unit-article ul, .unit-article ol, .unit-article dl {
   padding-left: 0;
 }
-.unit-article ul {
-  list-style: none;
-}
 .list-tag li ~ li {
   margin-left: 10px;
 }
@@ -320,6 +315,9 @@ pre {
 }
 .unit-article .index-page li{
   margin-bottom: 50px;
+}
+ul.index-page {
+  list-style: none;
 }
 .unit-article ol {
   list-style: decimal;
@@ -380,6 +378,7 @@ pre {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  width: 47.125em;
 }
 .unit-article img.left {
   margin-right: 16px;
