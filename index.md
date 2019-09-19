@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Latest posts"
+title: "will writes code"
 description: ""
 ---
 {% include JB/setup %}
@@ -20,7 +20,7 @@ description: ""
 			{{ preview }}
 		</a>
 
-		<h6> Published in {{ post.date | date: "%d/%m/%Y" }} </h6>
+		<h6> Posted {{ post.date | date: "%d/%m/%Y" }} </h6>
 	</li>
 
 {% endfor %}
