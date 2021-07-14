@@ -19,8 +19,6 @@ description: ""
 			<h4> {{ post.tagline }} </h4>
 			{{ preview }}
 		</a>
-
-		<h6> Posted {{ post.date | date: "%d/%m/%Y" }} </h6>
 	</li>
 
 {% endfor %}
